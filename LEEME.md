@@ -135,12 +135,12 @@ define('WEB_PAGE', 'tusitioweb.com'); // without http(s), without www and withou
 // some examples: define('WEB_PAGE', 'yourwebsite.com'); or define('WEB_PAGE', 'yourwebsite.com/myFolder');
 
 // Error log
-define('EXCEPTIONS_LOG', BASE_PATH .'src/exceptions/logs/exceptions.log');
+define('EXCEPTIONS_LOG', BASE_PATH .'/src/exceptions/logs/exceptions.log');
 
 // A little configuration about emails...
-define('JSON_FILE_VERIFICATION_EMAIL', BASE_PATH . 'src/config/verification_email.json'); // json template for verification email. Edit the text as you like
+define('JSON_FILE_VERIFICATION_EMAIL', BASE_PATH . '/src/config/verification_email.json'); // json template for verification email. Edit the text as you like
 define('FORGOT_PASSWORD_PAGE', 'forgot.php'); // default file where the email data (token and user id) is captured.
-define('JSON_FILE_FORGOT_PASSWORD_EMAIL', BASE_PATH . 'src/config/forgot_password_email.json'); // json template for forgotten password email. Edit the text as you like
+define('JSON_FILE_FORGOT_PASSWORD_EMAIL', BASE_PATH . '/src/config/forgot_password_email.json'); // json template for forgotten password email. Edit the text as you like
 define('VERIFICATION_PAGE', 'verification.php'); // default file where the verification email data is captured
 define('EMAIL_FROM', 'admin@tusitioweb.com');
 
