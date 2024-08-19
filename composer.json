@@ -1,0 +1,26 @@
+{
+	"name": "odevnet/dulceauth",
+	"description": "PHP user management library that facilitates user registration and authentication, as well as the management of their roles and permissions. It is designed for small and medium-sized applications that require a robust, efficient and extensible solution.",
+	"type": "library",
+	"homepage": "https://github.com/odevnet/dulceAuth/",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Oscar",
+			"email": "oscardevnet@gmail.com"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"src\\": "src/"
+		},
+		"classmap": [
+			"."
+		]
+	},
+	"minimum-stability": "stable",
+	"require": {
+		"php": ">=8.1.0",
+		"illuminate/database": "^11.20"
+	}
+}

@@ -1,0 +1,9 @@
+# Ignorar:
+/vendor/
+
+.editorconfig
+notas.txt
+examples.php
+convenciones.txt
+/src/config/config.php
+examples.php
