@@ -1,7 +1,9 @@
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/odevnet/dulceAuth)
 ![GitHub](https://img.shields.io/github/license/odevnet/dulceAuth)
 ![Static Badge](https://img.shields.io/badge/Powered_by_PHP-%236375F2?style=flat&logo=PHP&logoColor=%236375F2&logoSize=27px&labelColor=%23fff)
-![Static Badge](https://img.shields.io/badge/LEEME-ESPA%C3%91OL-RED?style=flat&labelColor=%23F5190B%20&color=%23F4DA36&link=https%3A%2F%2Fgithub.com%2Fodevnet%2FdulceAuth%2Fblob%2Fmain%2FLEEME.md)
+[![Static Badge](https://img.shields.io/badge/LEEME-ESPA%C3%91OL-RED?style=flat&labelColor=%23F5190B%20&color=%23F4DA36&link=https://github.com/odevnet/dulceAuth/blob/main/LEEME.md)](https://github.com/odevnet/dulceAuth/blob/main/LEEME.md)
+
+
 # What is "dulceAuth"?
 **DulceAuth** is a PHP user management library that simplifies user registration and authentication, as well as the management of roles and permissions.
 It is designed for small to medium-sized applications that need a robust, efficient, and extensible solution.
