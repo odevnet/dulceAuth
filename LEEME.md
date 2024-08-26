@@ -1,5 +1,6 @@
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/odevnet/dulceAuth)
 ![GitHub](https://img.shields.io/github/license/odevnet/dulceAuth)
+![Static Badge](https://img.shields.io/badge/Powered_by_PHP-%236375F2?style=flat&logo=PHP&logoColor=%236375F2&logoSize=27px&labelColor=%23fff)
 
 # ¿Qué es "dulceAuth"?
 **DulceAuth** es una biblioteca PHP de gestión de usuarios que facilita el registro y autenticación de usuarios, así como la gestión de sus roles y permisos.
