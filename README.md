@@ -117,19 +117,6 @@ We'll leave the rest as it is.
 ```php
 <?php
 
-# Database configuration
-return [
-    'driver' => 'mysql',
-    'host' => 'localhost',
-    'database' => '', // Name of your database
-    'username' => '', // Database user
-    'password' => '', // Database password
-    'charset' => 'utf8mb4',
-    'collation' => 'utf8mb4_unicode_ci',
-    'prefix' => '',
-    // other configurations...
-];
-
 // Define the project base route
 define('BASE_PATH', dirname(__DIR__, 1)); // Return to the root of the project from src/config/
 
@@ -161,6 +148,19 @@ define('SESSION_EXPIRATION', 60 * 60); // session lifetime.
 //For 2 days: define('SESSION_EXPIRATION', 60 * 60 * 24 * 2);
 //For 7 days: define('SESSION_EXPIRATION', 60 * 60 * 24 * 7);
 //For 1 hour: define('SESSION_EXPIRATION', 60 * 60);
+
+# Database configuration
+return [
+    'driver' => 'mysql',
+    'host' => 'localhost',
+    'database' => '', // Name of your database
+    'username' => '', // Database user
+    'password' => '', // Database password
+    'charset' => 'utf8mb4',
+    'collation' => 'utf8mb4_unicode_ci',
+    'prefix' => '',
+    // other configurations...
+];
 
 ```
 ## JSON Files
