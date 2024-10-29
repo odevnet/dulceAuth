@@ -24,10 +24,12 @@ Some features include:
 # Table of Contents
 1. [Installation and Usage](#installation-and-usage)
     1. [Through GitHub](#github)
-    2. [Library Usage](#usage)
+    2. [Through Composer](#composer)
+    3. [Library Usage](#usage)
 2. [Configuration](#configuration)
     1. [Database](#database)
     2. [Config.php](#config-file)
+    3. [JSON Files](#json-files)
 3. [Exceptions](#exception-handling)
 4. [Logger Class](#logger-class)
 5. [User Registration](#register-user)
@@ -58,6 +60,7 @@ Some features include:
 11. [Sessions](#sessions)
     1. [Session Duration](#session-duration)
 12. [Email Class](#dulcemail)
+13. [Creating services](#create-a-service)
 
 Claro, aquí está la traducción respetando el formato de markdown:
 
@@ -81,24 +84,19 @@ Once cloned, with the console open and in the project directory, run:
 
 `composer install` to automatically install the necessary dependencies.
 
+## Composer
+In a terminal and with composer installed, run the following command:
+`composer install odevnet/dulceauth`
+This will install the library and all necessary dependencies.
+
 ## Usage
 Once you have *dulceAuth* downloaded and [configured](#configuration), simply include and instantiate the library to use it like this:
-
-Imagine the library is in the root directory, and you have a file named index.php:
 ```php
-use src\Logger;
+require __DIR__ . '/vendor/autoload.php';
 
-require('DulceAuth.php');
+$configPath = __DIR__ . '/config/config.php'; // include the path where your configuration file is located
 
-$dulceAuth = new DulceAuth($dulce);
-```
-You might also include it in a subdirectory. So, if the library is in the 'mysub/' subdirectory, for example, and you have a file named index.php in the root, you should do:
-```php
-use src\Logger;
-
-require('mysub/DulceAuth.php');
-
-$dulceAuth = new DulceAuth($dulce);
+$dulceAuth = new src\DulceAuth($configPath);
 ```
 And from here, you will be able to use each of the available methods provided by the library ;)
 
@@ -114,40 +112,40 @@ the user's name, you will need to rename that field to *name* and the table name
 ## Config File
 The **config** file is quite descriptive regarding what each configuration option does and which ones we can modify and which ones we can't.
 For now, it's basic but functional.
-Create a file in *src/config/config.php* with all the following content, and for now, only edit the *driver, host, database, username,* and *password*. Also, adjust the constant *WEB_PAGE*.
+Create a file in *src/config/config.php* with all the following content, and for now, only edit the *driver, host, database, username,* and *password*. Also, adjust the constant *WEB_PAGE* and *EMAIL_FROM*.
 We'll leave the rest as it is.
 ```php
-// Typical database connection
-$driver = 'mysql';
-$host = 'localhost';
-$database = ''; // Name of your database
-$username = ''; // Database user
-$password = ''; // Database password
-$charset = 'utf8mb4';
-$collation = 'utf8mb4_unicode_ci';
-$prefix = '';
+<?php
+
+# Database configuration
+return [
+    'driver' => 'mysql',
+    'host' => 'localhost',
+    'database' => '', // Name of your database
+    'username' => '', // Database user
+    'password' => '', // Database password
+    'charset' => 'utf8mb4',
+    'collation' => 'utf8mb4_unicode_ci',
+    'prefix' => '',
+    // other configurations...
+];
 
 // Define the project base route
-define('BASE_PATH', dirname(__DIR__, 2)); // Return to the root of the project from src/config/
-
-// Define other important routes
-define('CONFIG_PATH', BASE_PATH . '/src/config/');
-define('BOOTSTRAP_PATH', BASE_PATH . '/Bootstrap.php');
-define('CLASE_PATH', BASE_PATH . '/DulceAuth.php');
+define('BASE_PATH', dirname(__DIR__, 1)); // Return to the root of the project from src/config/
 
 // Define common constants here
 define('WEB_PAGE', 'yourwebsite.com'); // without http(s), without www and without ending in /
 // some examples: define('WEB_PAGE', 'yourwebsite.com'); or define('WEB_PAGE', 'yourwebsite.com/myFolder');
+define('EMAIL_FROM', 'admin@yourwebsite.com');
 
 // Error log
-define('EXCEPTIONS_LOG', BASE_PATH . '/src/exceptions/logs/exceptions.log');
+define('LOG_FILE', BASE_PATH . '/logs/log_file.log'); // IF IT DOES NOT EXIST, CREATE IT OR ESTABLISH A DIRECTORY AND FILE OF YOUR PREFERENCE
 
 // A little configuration about emails...
-define('JSON_FILE_VERIFICATION_EMAIL', BASE_PATH . '/src/config/verification_email.json'); // json template for verification email. Edit the text as you like
+define('JSON_FILE_VERIFICATION_EMAIL', BASE_PATH . '/config/verification_email.json'); // json template for verification email. Edit the text as you like
 define('FORGOT_PASSWORD_PAGE', 'forgot.php'); // default file where the email data (token and user id) is captured
-define('JSON_FILE_FORGOT_PASSWORD_EMAIL', BASE_PATH . '/src/config/forgot_password_email.json'); // json template for forgotten password email. Edit the text as you like
+define('JSON_FILE_FORGOT_PASSWORD_EMAIL', BASE_PATH . '/config/forgot_password_email.json'); // json template for forgotten password email. Edit the text as you like
 define('VERIFICATION_PAGE', 'verification.php'); // default file where the verification email data is captured
-define('EMAIL_FROM', 'admin@yourwebsite.com');
 
 // Roles. At the moment do not modify anything!!
 define('DEFAULT_ROLE', 'User'); // default role
@@ -163,6 +161,29 @@ define('SESSION_EXPIRATION', 60 * 60); // session lifetime.
 //For 2 days: define('SESSION_EXPIRATION', 60 * 60 * 24 * 2);
 //For 7 days: define('SESSION_EXPIRATION', 60 * 60 * 24 * 7);
 //For 1 hour: define('SESSION_EXPIRATION', 60 * 60);
+
+```
+## JSON Files
+The verification_email.json and forgot_password_email.json files should, by convention, be inside the /config folder.
+Copy the following content (modify it to your liking) to the **verification_email.json** file and save it to /config:
+```json
+{
+	"verification": {
+		"subject": "Validate your account",
+		"message": "You have just registered at... Click the following link: {{verification_link}} to verify your account and log in.",
+		"screen_message": "We have just sent you an email to confirm your account. Please check your inbox."
+	}
+}
+```
+Same for the *forgot_password_email.json* file:
+```json
+{
+	"forgot": {
+		"subject": "Password Reset",
+		"message": "You are receiving this email because you have forgotten your password, and a token has been generated to reset it. \nClick the following link: {{verification_link}} to reset your password. \n\n Note: If you did not request this, please contact administration immediately as your account may be at risk.",
+		"screen_message": "We have just sent you an email to reset your password. Please check your inbox."
+	}
+}
 ```
 # Exception Handling
 Exceptions are organized by type, meaning whether they are related to roles, tokens, or users.
@@ -257,7 +278,7 @@ try {
     Logger::error($ex->getMessage(), $ex->getTraceAsString());
 }
 ```
-This causes the exception to be recorded in the file. By default, this file is located at **src/exceptions/logs/exceptions.log** and can be modified through the **EXCEPTIONS_LOG** constant in the config file.
+This causes the exception to be recorded in the file. By default, this file is located at **logs/log_file.log** and can be modified through the *LOG_FILE* constant in the config file.
 
 # Register User
 ```register(string $name, string $email, string $password, array $options = [])```
@@ -304,7 +325,9 @@ $count = 3;
 for ($i = 1; $i <= $count; $i++) {
     try {
 
-        $dulceAuth = new DulceAuth($dulce);
+        $configPath = __DIR__ . '/config/config.php';
+
+        $dulceAuth = new src\DulceAuth($configPath);
 
         $register = $dulceAuth->register("Test$i", "test$i@demo.com", "1234", ["verified" => 1]);
         echo "User test$i registered successfully.\n";
@@ -1281,3 +1304,23 @@ try {
     echo $ex->getMessage();
 }
 ```
+# Create a service
+Through bootstrap, all the services that dulceAuth needs to work are created/started, however,
+sometimes, we may need other additional services (classes). Well, this is possible and easy to do.
+
+We just need to *run* the dulceAuth service container like this:
+```php
+$dulceAuth->dulce->addService('Name of the service', function ($dulce) {
+    return new espacioDeNombres\Servicio();
+});
+```
+Por ejemplo:
+```php
+$dulceAuth->dulce->addService('Forms', function ($dulce) {
+    return new helpers\Form();
+});
+
+echo $dulceAuth->dulce->get('Forms');
+```
+The above example would add a new class to dulceAuth which would not come by default.
+I think it's pretty easy to understand ;-)

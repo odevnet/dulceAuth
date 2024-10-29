@@ -1,5 +1,7 @@
 <?php
 
+namespace src;
+
 /**
  * dulceAuth: Library that allows user management. It facilitates registration
  * and authentication, as well as the administration of users with roles and
@@ -10,9 +12,8 @@
  * @license https://github.com/odevnet/dulceAuth/blob/main/LICENSE (MIT License)
  */
 
+use src\Configuration;
 use src\DulceContainer;
-
-require('Bootstrap.php');
 
 /**
  * DulceAuth class
@@ -20,6 +21,8 @@ require('Bootstrap.php');
  * This class serves as an abstraction layer for authentication methods,
  * user, role and permission management, as well as account verification
  * and session management.
+ *
+ * @package src
  *
  * @since 1.0
  */
@@ -125,15 +128,24 @@ class DulceAuth
     private $dulceMail;
 
     /**
+     * Represents the Configuration class
+     *
+     * @var \src\Configuration
+     */
+    private $config;
+
+    /**
      * Constructor that initializes services from the dependency container.
      *
-     * @param \src\DulceContainer $dulce Contenedor de dependencias.
+     * @param array|string $customConfig Configuration file.
+     * @param \src\DulceContainer $container Dependency container.
      */
-
-    public function __construct(DulceContainer $dulce)
+    public function __construct($customConfig = [], $container = new DulceContainer)
     {
+        $this->config = new Configuration($customConfig);
+        $this->dulce = $container;
+        $bootstrap = new Bootstrap($this->config, $this->dulce);
 
-        $this->dulce = $dulce;
         $this->auth = $this->dulce->get('Auth');
         $this->accountVerification = $this->dulce->get('AccountVerification');
         $this->session = $this->dulce->get('Session');
@@ -149,6 +161,21 @@ class DulceAuth
         $this->dulceMail = $this->dulce->get('DulceMail');
     }
     /**
+     * Gets a value from the configuration.
+     *
+     * @param string $key The key for the configuration value.
+     * @param mixed $default The default value to return if the key does not exist.
+     * @return mixed The value of the configuration or the default value.
+     *
+     * @return mixed
+     *
+     * @see src\Configuration::get
+     */
+    public function getConfig($key, $default = null)
+    {
+        return $this->config->get($key, $default);
+    }
+    /**
      * Returns the email service to make full use of the email class.
      *
      * @return \src\DulceMail
@@ -157,6 +184,7 @@ class DulceAuth
     {
         return $this->dulceMail;
     }
+
     /**
      * Returns the session management service.
      *

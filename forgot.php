@@ -1,5 +1,6 @@
 <?php
 // This file serves as an example; modify it to your liking
+require __DIR__ . '/vendor/autoload.php';
 
 use src\exceptions\tokens\RelationShipTokenException;
 use src\exceptions\tokens\TokenExpiredException;
@@ -8,10 +9,9 @@ use src\exceptions\tokens\TokenException;
 
 use src\Logger;
 
-require('DulceAuth.php');
+$configPath = __DIR__ . '/config/config.php';
 
-$dulceAuth = new DulceAuth($dulce);
-
+$dulceAuth = new src\DulceAuth($configPath);
 
 try {
     $token = $_GET['token'];

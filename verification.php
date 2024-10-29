@@ -1,16 +1,17 @@
 <?php
 // This file serves as an example; modify it to your liking
+require __DIR__ . '/vendor/autoload.php';
 
 use src\exceptions\tokens\RelationShipTokenException;
 use src\exceptions\tokens\TokenExpiredException;
 use src\exceptions\tokens\TokenNotFoundException;
 use src\exceptions\tokens\TokenException;
-
 use src\Logger;
 
-require('DulceAuth.php');
 
-$dulceAuth = new DulceAuth($dulce);
+$configPath = __DIR__ . '/config/config.php';
+
+$dulceAuth = new src\DulceAuth($configPath);
 
 
 try {
