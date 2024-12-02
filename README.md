@@ -86,7 +86,7 @@ Once cloned, with the console open and in the project directory, run:
 
 ## Composer
 In a terminal and with composer installed, run the following command:
-`composer install odevnet/dulceauth`
+`composer require odevnet/dulceauth`
 This will install the library and all necessary dependencies.
 
 ## Usage
