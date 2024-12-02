@@ -1314,7 +1314,7 @@ $dulceAuth->dulce->addService('Name of the service', function ($dulce) {
     return new espacioDeNombres\Servicio();
 });
 ```
-Por ejemplo:
+For example:
 ```php
 $dulceAuth->dulce->addService('Forms', function ($dulce) {
     return new helpers\Form();
