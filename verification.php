@@ -9,9 +9,10 @@ use src\exceptions\tokens\TokenException;
 use src\Logger;
 
 
-$configPath = __DIR__ . '/config/config.php';
+$config = __DIR__ . '/src/config/config.php';
+$databaseConfig = __DIR__ . '/src/config/config-db.php';
 
-$dulceAuth = new src\DulceAuth($configPath);
+$dulceAuth = new src\DulceAuth([$config, $databaseConfig]);
 
 
 try {

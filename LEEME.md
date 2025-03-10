@@ -24,24 +24,26 @@ Algunas caracteristicas:
     2. [A través de composer](#composer)
     3. [Uso de la libreria](#uso)
 2. [Configuración](#configuración)
-    1. [Base de datos](#base-de-datos)
+    1. [Base de datos (Tablas)](#base-de-datos)
     2. [Config.php](#archivo-config)
-    3. [Archivos JSON](#archivos-json)
+    3. [Archivo base de datos](#archivo-configuración-de-la-base-de-datos)
+    4. [Archivos JSON](#archivos-json)
 3. [Excepciones](#uso-de-excepciones)
 4. [Clase Logger](#clase-logger)
 5. [Registrar usuario](#registrar-usuario)
     1. [Verificación de cuentas](#verificación-de-cuentas)
     2. [Verificación de cuentas. Segunda parte.](#verificación-de-cuentas-segunda-parte)
     3. [Un caso excepcional](#un-caso-excepcional-o-no)
-6. [Login](#login)
-7. [Usuarios](#users)
+6. [Constantes personalizadas](#custom_verification_email_url-y-custom_forgot_password_email_url)
+7. [Login](#login)
+8. [Usuarios](#users)
     1. [¿Existe?](#el-usuario-existe)
     2. [Editar usuario](#edición-de-usuarios)
     3. [Eliminar usuario](#eliminar-un-usuario)
     4. [Crear usuarios](#crear-un-nuevo-usuario)
     5. [Cambiar contraseña](#cambiar-contraseña-de-usuario)
     6. [Recuperar contraseña/Contraseña olvidada](#recuperación-de-contraseña)
-8. [Roles y permisos](#roles-y-permisos)
+9. [Roles y permisos](#roles-y-permisos)
     1. [Crear un rol](#crear-un-nuevo-rol)
     2. [Editar un rol](#editar-un-rol)
     3. [Eliminar un rol](#eliminar-un-rol)
@@ -52,12 +54,12 @@ Algunas caracteristicas:
         3. [Eliminar un permiso](#eliminar-un-permiso)
         4. [Asignar un permiso a un rol](#asignación-de-permisos-a-roles)
         5. [Quitar un permiso de un rol](#quitar-permiso-a-un-rol)
-9. [Roles y permisos. Parte 2](#roles-y-permisos-v2)
-10. [Autorización](#autorización)
-11. [Sesiones](#sesiones)
+10. [Roles y permisos. Parte 2](#roles-y-permisos-v2)
+11. [Autorización](#autorización)
+12. [Sesiones](#sesiones)
     1. [Tiempo de la sesión](#tiempo-de-la-sesion)
-12. [Clase Email](#dulcemail)
-13. [Creando servicios](#crear-un-servicio)
+13. [Clase Email](#dulcemail)
+14. [Creando servicios](#crear-un-servicio)
 
 # Instalación y uso
 Los únicos requisitos son:
@@ -84,14 +86,19 @@ En una terminal y con composer instalado ejecuta el siguiente comando:
 `composer require odevnet/dulceauth`
 Esto instalara la libreria y todas las dependencias necesarias.
 
+Automaticamente se ejecutará el archivo de instalación (Install.php) para crear los archivos *config/config.php*, *config/config-db.php*, *config/verification_email.json*, *config/forgot_password_email.json* y *logs/log_file.log*.
+
+Tranquil@, más adelante podrás modificar sus rutas sino te gustan ;-)
+
 ## Uso
 Una vez tengas *dulceAuth* descargado y [configurado](#configuración), simplemente para poder usar la libreria deberas de incluirla e instanciarla asi:
 ```php
 require __DIR__ . '/vendor/autoload.php';
 
-$configPath = __DIR__ . '/config/config.php'; // incluir la ruta donde se encuentre tu archivo de configuración
+$config = __DIR__ . '/config/config.php'; // ruta donde se encuentra tu archivo de configuración
+$databaseConfig = __DIR__ . '/config/config-db.php'; // ruta donde se encuentra tu archivo de configuración de base de datos
 
-$dulceAuth = new src\DulceAuth($configPath);
+$dulceAuth = new src\DulceAuth([$config, $databaseConfig]);
 ```
 
 Y a partir de aqui, ya podrás usar cada uno de los métodos disponibles que tiene la libreria ;)
@@ -106,16 +113,15 @@ el nombre del usuario, deberas de editar dicho campo a *name* y el nombre de la 
 
 
 ## Archivo config
-El archivo **config** es bastante descriptivo con lo que hace cada opción de configuración y cual podemos
-modificar y cual no.
+Durante la instalación, se ha creado un archivo **config.php** que en si es bastante descriptivo con lo que hace cada opción de configuración y cual podemos modificar y cual no.
 De momento es básico pero funcional.
-Crea un archivo de configuración, preferiblemente llamado *config.php* y guardalo en la ruta *config/config.php* con todo el contenido siguiente y por ahora solo edita el *driver, host, database, username* y *password*. Bueno, también la constante *WEB_PAGE* y *EMAIL_FROM*.
-Lo demás lo dejaremos como esta.
-```php
-<?php
 
+Principalmente solo es necesario modificar las constantes *WEB_PAGE* y *EMAIL_FROM*.
+Lo demás lo podemos dejar como esta, sin embargo, si queremos algo más de personalización, podemos configurar las rutas
+de los archivos de JSON o del .log si lo consideramos necesario.
+```php
 // Define the project base route
-define('BASE_PATH', dirname(__DIR__, 1)); // Return to the root of the project from src/config/
+define('BASE_DIR', dirname(__DIR__)); // Return to the root of the project from src/config/
 
 // Define common constants here
 define('WEB_PAGE', 'yourwebsite.com'); // without http(s), without www and without ending in /
@@ -123,13 +129,14 @@ define('WEB_PAGE', 'yourwebsite.com'); // without http(s), without www and witho
 define('EMAIL_FROM', 'admin@yourwebsite.com');
 
 // Error log
-define('LOG_FILE', BASE_PATH . '/logs/log_file.log'); //SINO EXISTE CREALO O ESTABLECE UN DIRECTORIO Y ARCHIVO DE TU PREFERENCIA
+define('LOG_FILE', BASE_DIR . '/logs/log_file.log');
 
 // A little configuration about emails...
-define('JSON_FILE_VERIFICATION_EMAIL', BASE_PATH . '/config/verification_email.json'); // json template for verification email. Edit the text as you like
-define('FORGOT_PASSWORD_PAGE', 'forgot.php'); // default file where the email data (token and user id) is captured
-define('JSON_FILE_FORGOT_PASSWORD_EMAIL', BASE_PATH . '/config/forgot_password_email.json'); // json template for forgotten password email. Edit the text as you like
-define('VERIFICATION_PAGE', 'verification.php'); // default file where the verification email data is captured
+define('VERIFICATION_EMAIL_JSON_FILE', BASE_DIR . '/config/verification_email.json'); // json template for verification email. Edit the text as you like
+define('VERIFICATION_PAGE_URL', 'verification.php'); // default file where the verification email data is captured
+
+define('FORGOT_PASSWORD_EMAIL_JSON_FILE', BASE_DIR . '/config/forgot_password_email.json'); // json template for forgotten password email. Edit the text as you like
+define('FORGOT_PASSWORD_PAGE_URL', 'forgot.php'); // default file where the email data (token and user id) is captured
 
 // Roles. At the moment do not modify anything!!
 define('DEFAULT_ROLE', 'User'); // default role
@@ -145,43 +152,49 @@ define('SESSION_EXPIRATION', 60 * 60); // session lifetime.
 //For 2 days: define('SESSION_EXPIRATION', 60 * 60 * 24 * 2);
 //For 7 days: define('SESSION_EXPIRATION', 60 * 60 * 24 * 7);
 //For 1 hour: define('SESSION_EXPIRATION', 60 * 60);
-
+```
+## Archivo configuración de la base de datos
+También durante la instalación, se ha creado un archivo llamado **config-db.php** que sirve para configurar los datos de
+la base de datos.
+```php
+<?php
 # Database configuration
-return [
-    'driver' => 'mysql',
-    'host' => 'localhost',
-    'database' => '', // Name of your database
-    'username' => '', // Database user
-    'password' => '', // Database password
-    'charset' => 'utf8mb4',
-    'collation' => 'utf8mb4_unicode_ci',
-    'prefix' => '',
-    // other configurations...
-];
+define('DRIVER', 'mysql');
+define('HOST', 'localhost');
+define('DATABASE', '');
+define('USERNAME', '');
+define('PASSWORD', '');
+define('CHARSET', 'utf8mb4');
+define('COLLATION', 'utf8mb4_unicode_ci');
+define('PREFIX', '');
+```
 
-```
 ## Archivos JSON
-Los archivos verification_email.json y forgot_password_email.json deben estar, por convención, dentro de la carpeta /config.
-Copia el siguiente contenido (modificalo a tu gusto) para el archivo **verification_email.json** y guardalo en /config:
+Los archivos *verification_email.json* y *forgot_password_email.json* se crean automaticamente a la hora de instalar la biblioteca.
+Por convención, se crean dentro de la carpeta */config* pero podemos modificar su ruta en el archivo **config.php** si queremos.
+**verification_email.json** contiene el siguiente contenido:
 ```json
 {
-    "verification": {
-        "subject": "Valida tu cuenta",
-        "message": "Te acabas de registrar en... Haz click en el siguiente enlace: {{verification_link}} para verificar tu cuenta.",
-        "screen_message": "Te acabamos de enviar un email para verificar tu cuenta, por favor, compruebalo."
-    }
-}
-```
-Lo mismo para el archivo *forgot_password_email.json*:
-```json
-{
-	"forgot": {
-		"subject": "Regeneracion de contraseña",
-		"message": "Recibes este correo porque has olvidado tu contraseña y se ha generado un token para reestablecerla. \nHaz click en el siguiente enlace: {{verification_link}} para reestablecer tu contraseña. \n\n Nota: Si no has sido tu ponte en contacto urgente con administración ya que tu cuenta esta en peligro.",
-		"screen_message": "Te acabamos de enviar un correo electronico para reestablecer tu contraseña. Por favor, compruebalo."
+	"verification": {
+		"type": "verification",
+		"subject": "Validate your account",
+		"message": "You have just registered at... Click the following link: {{verification_link}} to verify your account and log in.",
+		"screen_message": "We have just sent you an email to confirm your account. Please check your inbox."
 	}
 }
 ```
+Y el archivo **forgot_password_email.json** contiene:
+```json
+{
+	"forgot": {
+		"type": "forgot",
+		"subject": "Password Reset",
+		"message": "You are receiving this email because you have forgotten your password, and a token has been generated to reset it. \nClick the following link: {{verification_link}} to reset your password. \n\n Note: If you did not request this, please contact administration immediately as your account may be at risk.",
+		"screen_message": "We have just sent you an email to reset your password. Please check your inbox."
+	}
+}
+```
+
 # Uso de excepciones
 Las excepciones se encuentran organizadas según el tipo, es decir, si estan relacionadas con los roles, tokens o usuarios.
 Por ejemplo, a la hora de registrar un usuario podria pasar que ya exista un usuario registrado con ese email, por tanto,
@@ -321,9 +334,10 @@ $count = 3;
 for ($i = 1; $i <= $count; $i++) {
     try {
 
-        $configPath = __DIR__ . '/config/config.php';
+        $config = __DIR__ . '/src/config/config.php';
+        $databaseConfig = __DIR__ . '/src/config/config-db.php';
 
-        $dulceAuth = new src\DulceAuth($configPath);
+        $dulceAuth = new src\DulceAuth([$config, $databaseConfig]);
 
         $register = $dulceAuth->register("Test$i", "test$i@demo.com", "1234", ["verified" => 1]);
         echo "Usuario test$i registrado correctamente.\n";
@@ -362,7 +376,8 @@ requiere verificación, de lo contrario no envia nada. ¿Qué quiero decir? Qué
 Sencillo. Una vez el usuario se ha registrado, el método *register* se encarga de enviar un email al usuario con un token generado previamente. Nosotros, debemos de validarlo y si todo es correcto verificar la cuenta.
 
 El email que recibirá el usuario contendrá un enlace similar a este:
-```tuweb.com/verification.php?token=TOKENGENERADO&userId=IDUSUARIO```
+```tuweb.com/verification.php?token=TOKENGENERADO&userId=IDUSUARIO``` siempre y cuando la constante **CUSTOM_VERIFICATION_EMAIL_URL**
+no este definida.
 
 Entonces, en la parte de tu aplicación o, lo que es lo mismo, en la página (verification.php) dónde queramos capturar los datos, o sea, el token y la id de usuario, podemos hacer uso de GET asi:
 ```php
@@ -432,7 +447,7 @@ try {
 ```
 
 > **Nota:**
-> Tanto la plantilla que se envia por email al usuario, es decir, el texto que se le envia como la página donde recibes el token y la id de usuario, se pueden modificar en el archivo *config* a través de las constantes **JSON_FILE_VERIFICATION_EMAIL** y **VERIFICATION_PAGE** respectivamente.
+> Tanto la plantilla que se envia por email al usuario, es decir, el texto que se le envia como la página donde recibes el token y la id de usuario, se pueden modificar en el archivo *config* a través de las constantes **VERIFICATION_EMAIL_JSON_FILE** y **VERIFICATION_PAGE_URL** respectivamente.
 
 ## Un caso excepcional. O no!
 Puede pasar que obligemos a todos los usuarios a verificar su cuenta cuando se registren, pero... y si se registra una cuenta
@@ -467,7 +482,7 @@ try {
 }
 ```
 Si ejecutamos el código anterior no debemos hacer nada más. El usuario recibirá un email con un enlace tipo:
-```tuweb.com/verification.php?token=TOKENGENERADO&userId=IDUSUARIO``` y el procedimiento a seguir será exactamente el mismo que el descrito mucho más arriba, en el apartado [Verificación de cuentas. Segunda parte.](#verificación-de-cuentas-segunda-parte) haciendo uso del archivo *verification.php* y capturando los datos necesarios, o sea, el token y la id de usuario.
+```tuweb.com/verification.php?token=TOKENGENERADO&userId=IDUSUARIO``` (u otro si **CUSTOM_VERIFICATION_EMAIL_URL** esta definido) y el procedimiento a seguir será exactamente el mismo que el descrito mucho más arriba, en el apartado [Verificación de cuentas. Segunda parte.](#verificación-de-cuentas-segunda-parte) haciendo uso del archivo *verification.php* y capturando los datos necesarios, o sea, el token y la id de usuario.
 
 
 Ahora bien, si llamamos al método generateVerificationToken estableciendo **$send** a *false*, nos devolverá en forma de array su token y su id de usuario.
@@ -516,6 +531,30 @@ try {
 ```
 Después de enviar el email nosotros mismos, hacemos todo el proceso, es decir, enviamos el email, luego capturamos esos datos (token e id de usuario) y hacemos uso de las funciones validateTokenAccount y verified como antes...
 
+# CUSTOM_VERIFICATION_EMAIL_URL y CUSTOM_FORGOT_PASSWORD_EMAIL_URL
+Por defecto cuando se registra un usuario y se envia el email de verificación o se envia el email de recuperar la contraseña,
+se usa la clase DulceMail con un formato de url por definido tipo: ```tuweb.com/verification.php?token=TOKENGENERADO&userId=IDUSUARIO```
+
+Pues bien, si queremos modificar esto, y queremos que la url tenga otro formato ya sea por el motivo de estar usando un framework o
+cualquier otro, debemos de crear una constante con una función anónima de la siguiente manera:
+```php
+define('CUSTOM_VERIFICATION_EMAIL_URL', function (string $token, int $userId): string {
+    return "https://tuweb.com/validar/{$token}/usuario/{$userId}";
+});
+```
+Evidentemente la url la personalizamos a nuestro gusto.
+Ahora, cuando se envie un email de verificación, la url que recibirá el usuario en su email será:
+```https://tuweb.com/validar/{$token}/usuario/{$userId}```
+
+Es obvio que esa url deberá apuntar a una página donde capturemos el token y la id de usuario.
+
+Sucede lo mismo para la contraseña olvidada. Así que si queremos personalizar el email de "contraseña olvidada", deberemos
+de crear una constante como la siguiente:
+```php
+define('CUSTOM_FORGOT_PASSWORD_EMAIL_URL', function (string $token, int $userId): string {
+    return "https://tuweb.com/forgot-password/{$token}/usuario/{$userId}";
+});
+```
 
 # Login
 `$dulceAuth->login($email, $password);`
@@ -718,7 +757,8 @@ Con el método **forgotPassword**:
 
 Se genera un token para el usuario cuyo email hayamos pasado como parámetro.
 El parametro *$send* es opcional y podemos decidir si pasarlo o no. El hecho de pasarlo o no implica que el metodo se comporte de una manera u otra.
-Básicamente y de forma predeterminada, éste método **envia un email al usuario** con un enlace que contendrá el token y su id de usuario que posteriormente nos servirá para poder crear una nueva contraseña.
+Básicamente y de forma predeterminada, éste método **envia un email al usuario** con un enlace que contendrá el token y su id de usuario que posteriormente nos servirá para poder crear una nueva contraseña. [VER CONSTANTES PERSONALIZADAS](#custom_verification_email_url-y-custom_forgot_password_email_url)
+
 Seguro que todo esto te suena, ya que su funcionamiento es similar al método *generateVerificationToken*.
 
 La forma común de usarlo es:
@@ -753,7 +793,7 @@ Pues bien, llamaremos al método *forgotPassword* **solo** pasandole el email de
 $forgotPassword = $dulceAuth->forgotPassword('test@demo.com');
 ```
 Si comprobamos el correo y hacemos click en el enlace, nos lleva a la pagina que hemos establecido como página de "recuperacion de contraseña".
-La página por defecto para la recuperación de contraseña se llama *forgot.php* y se establece con la constante *FORGOT_PASSWORD_PAGE* del archivo **config.php.**
+La página por defecto para la recuperación de contraseña se llama *forgot.php* y se establece con la constante *FORGOT_PASSWORD_PAGE_URL* del archivo **config.php.**
 
 Es en ésta página donde recuperamos los valores de *token* y *userId* mediante **$_GET** y se los pasamos al método **validateTokenPassword**:
 

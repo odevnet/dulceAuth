@@ -183,8 +183,8 @@ class DulceMail
         //$template = json_decode(file_get_contents(JSON_FILE_VERIFICATION_EMAIL), true)['verification'];
         //return $this->sendEmail($to, $token, $userId, $template, $page = VERIFICATION_PAGE, $show_screen_message);
 
-        $template = $this->loadTemplate(JSON_FILE_VERIFICATION_EMAIL, 'verification');
-        return $this->sendEmail($to, $token, $userId, $template, VERIFICATION_PAGE, $show_screen_message);
+        $template = $this->loadTemplate(VERIFICATION_EMAIL_JSON_FILE, 'verification');
+        return $this->sendEmail($to, $token, $userId, $template, VERIFICATION_PAGE_URL, $show_screen_message);
     }
 
     /**
@@ -201,8 +201,8 @@ class DulceMail
     {
         //$template = json_decode(file_get_contents(JSON_FILE_FORGOT_PASSWORD_EMAIL), true)['forgot'];
         //return $this->sendEmail($to, $token, $userId, $template, $page = FORGOT_PASSWORD_PAGE, $show_screen_message);
-        $template = $this->loadTemplate(JSON_FILE_FORGOT_PASSWORD_EMAIL, 'forgot');
-        return $this->sendEmail($to, $token, $userId, $template, FORGOT_PASSWORD_PAGE, $show_screen_message);
+        $template = $this->loadTemplate(FORGOT_PASSWORD_EMAIL_JSON_FILE, 'forgot');
+        return $this->sendEmail($to, $token, $userId, $template, FORGOT_PASSWORD_PAGE_URL, $show_screen_message);
     }
 
     /**
@@ -222,7 +222,24 @@ class DulceMail
     private function sendEmail(string $to, string $token, int $userId, array $template, string $page, bool $show_screen_message): bool
     {
         $subject = $template['subject'];
-        $message = str_replace('{{verification_link}}', WEB_PAGE . "/{$page}?token={$token}&userId={$userId}", $template['message']);
+        //var_dump($template['type']);
+
+        $verificationUrl = defined('CUSTOM_VERIFICATION_EMAIL_URL')
+            ? call_user_func(CUSTOM_VERIFICATION_EMAIL_URL, $token, $userId)
+            : WEB_PAGE . "/{$page}?token={$token}&userId={$userId}";
+
+        if (isset($template['type']) && $template['type'] === 'verification') {
+            $message = str_replace('{{verification_link}}', $verificationUrl, $template['message']);
+        }
+
+        $forgotUrl = defined('CUSTOM_FORGOT_PASSWORD_EMAIL_URL')
+            ? call_user_func(CUSTOM_FORGOT_PASSWORD_EMAIL_URL, $token, $userId)
+            : WEB_PAGE . "/{$page}?token={$token}&userId={$userId}";
+
+        if (isset($template['type']) && $template['type'] === 'forgot') {
+            $message = str_replace('{{verification_link}}', $forgotUrl, $template['message']);
+        }
+        //$message = str_replace('{{verification_link}}', $verificationUrl, $template['message']);
         $screen_message = $template['screen_message'];
         // Set headers
         $headers = "From:" . $this->from;

@@ -137,13 +137,26 @@ class DulceAuth
     /**
      * Constructor that initializes services from the dependency container.
      *
-     * @param array|string $customConfig Configuration file.
-     * @param \src\DulceContainer $container Dependency container.
+     * @param array|string $customConfig Configuration file(s). It can be a string (single file)
+     *                                    or an array of file paths (multiple files).
+     * @param \src\DulceContainer $container Dependency container (optional).
      */
-    public function __construct($customConfig = [], $container = new DulceContainer)
+    public function __construct($customConfig = [], $container = null)
     {
-        $this->config = new Configuration($customConfig);
-        $this->dulce = $container;
+        $this->config = new Configuration();
+
+        // Asegurar que $customConfig sea siempre un array
+        $files = is_array($customConfig) ? $customConfig : [$customConfig];
+
+        // Cargar todos los archivos de configuración
+        foreach ($files as $file) {
+            $this->config->load($file);
+        }
+
+        // Inicializar el contenedor de dependencias (por defecto, uno nuevo)
+        $this->dulce = $container ?? new DulceContainer();
+
+        // Inicializar Bootstrap con la configuración y el contenedor
         $bootstrap = new Bootstrap($this->config, $this->dulce);
 
         $this->auth = $this->dulce->get('Auth');

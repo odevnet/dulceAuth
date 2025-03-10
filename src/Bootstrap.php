@@ -41,14 +41,14 @@ class Bootstrap
         // Inicializa Capsule (Eloquent)
         $this->capsule = new Capsule;
         $this->capsule->addConnection([
-            'driver' => $config->get('driver'),
-            'host' => $config->get('host'),
-            'database' => $config->get('database'),
-            'username' => $config->get('username'),
-            'password' => $config->get('password'),
-            'charset' => $config->get('charset'),
-            'collation' => $config->get('collation'),
-            'prefix' => $config->get('prefix'),
+            'driver' => $config->get('DRIVER'),
+            'host' => $config->get('HOST'),
+            'database' => $config->get('DATABASE'),
+            'username' => $config->get('USERNAME'),
+            'password' => $config->get('PASSWORD'),
+            'charset' => $config->get('CHARSET'),
+            'collation' => $config->get('COLLATION'),
+            'prefix' => $config->get('PREFIX'),
         ]);
         $this->capsule->setAsGlobal();
         $this->capsule->bootEloquent();

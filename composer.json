@@ -18,11 +18,16 @@
 			"."
 		]
 	},
+	"scripts": {
+		"post-install-cmd": [
+			"Install\\Install::crearEstructuraDirectorios"
+		]
+	},
 	"minimum-stability": "dev",
 	"prefer-stable": true,
 	"require": {
 		"php": ">=8.1.0",
 		"illuminate/database": "^11.20",
-		"laravel/serializable-closure": "^1.2"
+		"laravel/serializable-closure": "^1.2 || ^2.0"
 	}
 }
