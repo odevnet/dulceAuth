@@ -110,7 +110,7 @@ Well, you should leave it this way:
     },
     "scripts": {
         "post-install-cmd": [
-            "Install\\Install::crearEstructuraDirectorios"
+            "Install\\Install::createDirectoryStructure"
         ]
     }
 }
