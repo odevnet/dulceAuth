@@ -1,0 +1,8 @@
+{
+	"verification": {
+		"type": "verification",
+		"subject": "Validate your account",
+		"message": "You have just registered at... Click the following link: {{verification_link}} to verify your account and log in.",
+		"screen_message": "We have just sent you an email to confirm your account. Please check your inbox."
+	}
+}

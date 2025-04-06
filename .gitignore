@@ -1,0 +1,15 @@
+# Ignorar:
+/vendor/
+
+.editorconfig
+notas.txt
+examples.php
+convenciones.txt
+/src/config/config.php
+/src/config/config-db.php
+/src/config/prueba.php
+/src/config/verification_email.json
+/src/config/forgot_password_email.json
+/src/config/Install.php
+/install-copia/
+/src/logs/log_file.log
