@@ -71,6 +71,7 @@ class RoleManagement
      * Create a new role with the name passed as a parameter.
      *
      * @param string $name New name for the role.
+     * @param ?string $description  Optional description of the role.
      *
      * @return bool True if the role is created successfully.
      *
@@ -78,7 +79,7 @@ class RoleManagement
      * @throws \src\exceptions\roles\UsedRoleNameException If the new role name is already in use by another role.
      * @throws \src\exceptions\roles\RoleSaveException If there was an error saving the role edit.
      */
-    public function createRole(string $name): bool
+    public function createRole(string $name, ?string $description = null): bool
     {
         // Validate that the name is not empty and that there is no other role with the same name
         if (empty($name)) {
@@ -91,6 +92,7 @@ class RoleManagement
         // Create new role
         $role = new $this->roleModel();
         $role->name = $name;
+        $role->description = ($description !== null) ? $description : null;
 
         if ($role->save()) {
             return true;
@@ -113,7 +115,7 @@ class RoleManagement
      * @throws \src\exceptions\roles\UsedRoleNameException If the new role name is already in use by another role.
      * @throws \src\exceptions\roles\RoleSaveException If there was an error saving the role edit.
      */
-    public function editRole(int $roleId, string $newName): bool
+    public function editRole(int $roleId, string $newName, ?string $newDescription = null): bool
     {
 
         $role = $this->roleModel::find($roleId);
@@ -132,6 +134,7 @@ class RoleManagement
         }
 
         $role->name = $newName;
+        $role->description = ($newDescription !== null) ? $newDescription : null;
 
         if ($role->save()) {
             return true;
