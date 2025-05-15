@@ -19,7 +19,7 @@ namespace src;
  *
  * @package src
  *
- * @since 2.0.0
+ * @since 1.0.0
  */
 class Configuration
 {
@@ -33,28 +33,26 @@ class Configuration
      *
      * @param string $file Path to the configuration file.
      * @throws \Exception if the file is not found.
-     *
-     * @since 3.0.0
      */
     public static function load($file)
     {
         if (file_exists($file)) {
-            // Captura las constantes y define los valores
+            // Captures constants and defines values
             $constantsBefore = get_defined_constants(true)['user'] ?? [];
             $variablesBefore = get_defined_vars();
 
-            // Ejecutar el archivo de configuración
+            // Include the configuration file
             $configFromFile = include $file;
 
-            // Capturar las nuevas constantes definidas
+            // Capture the newly defined constants
             $constantsAfter = get_defined_constants(true)['user'] ?? [];
             $newConstants = array_diff_key($constantsAfter, $constantsBefore);
 
-            // Capturar las nuevas variables definidas
+            // Capture the newly defined variables
             $variablesAfter = get_defined_vars();
             $newVariables = array_diff_key($variablesAfter, $variablesBefore);
 
-            // Procesar las variables y combinarlas con la configuración actual
+            // Process the variables and combine them with the current configuration
             $newConfig = [];
             foreach ($newVariables as $key => $value) {
                 if ($key !== 'file' && $key !== 'constantsBefore' && $key !== 'variablesBefore') {
@@ -62,17 +60,17 @@ class Configuration
                 }
             }
 
-            // Guardar las constantes como parte de la configuración
+            // Save constants as part of the configuration
             foreach ($newConstants as $key => $value) {
                 $newConfig[$key] = $value;
             }
 
-            // Si el archivo devolvió un array, lo fusionamos también
+            // If the file returned an array, we merge it as well
             if (is_array($configFromFile)) {
                 $newConfig = array_merge($newConfig, $configFromFile);
             }
 
-            // Combinar la configuración existente con la nueva
+            // Merge existing configuration with new one
             self::$config = array_merge(self::$config, $newConfig);
         } else {
             throw new \Exception("Config file not found: $file");
@@ -99,8 +97,6 @@ class Configuration
      * Retrieves all configuration values.
      *
      * @return array The entire configuration array.
-     *
-     * @since 3.0.0
      */
     public static function all()
     {
@@ -111,8 +107,6 @@ class Configuration
      * Gets a list of loaded configuration files.
      *
      * @return array List of loaded files.
-     *
-     * @since 3.0.0
      */
     public static function loadedFiles()
     {
