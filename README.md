@@ -264,67 +264,67 @@ Below is a list of all possible exceptions:
 
 **Users:**
 
-+ src\exceptions\users\AccountValidationException -> See [AccountValidationException](src\exceptions\users\AccountValidationException.php "AccountValidationException")
++ src\exceptions\users\AccountValidationException -> See [AccountValidationException](src/exceptions/users/AccountValidationException.php "AccountValidationException")
 
-+ src\exceptions\users\ArrayOptionsUserException -> See [ArrayOptionsUserException](src\exceptions\users\ArrayOptionsUserException.php "ArrayOptionsUserException")
++ src\exceptions\users\ArrayOptionsUserException -> See [ArrayOptionsUserException](src/exceptions/users/ArrayOptionsUserException.php "ArrayOptionsUserException")
 
-+ src\exceptions\users\CreateUserException -> See [CreateUserException](src\exceptions\users\CreateUserException.php "CreateUserException")
++ src\exceptions\users\CreateUserException -> See [CreateUserException](src/exceptions/users/CreateUserException.php "CreateUserException")
 
-+ src\exceptions\users\DuplicateEmailException -> See [DuplicateEmailException](src\exceptions\users\DuplicateEmailException.php "DuplicateEmailException")
++ src\exceptions\users\DuplicateEmailException -> See [DuplicateEmailException](src/exceptions/users/DuplicateEmailException.php "DuplicateEmailException")
 
-+ src\exceptions\users\EditUserException -> See [EditUserException](src\exceptions\users\EditUserException.php "EditUserException")
++ src\exceptions\users\EditUserException -> See [EditUserException](src/exceptions/users/EditUserException.php "EditUserException")
 
-+ src\exceptions\users\InvalidPasswordException -> See [InvalidPasswordException](src\exceptions\users\InvalidPasswordException.php "InvalidPasswordException")
++ src\exceptions\users\InvalidPasswordException -> See [InvalidPasswordException](src/exceptions/users/InvalidPasswordException.php "InvalidPasswordException")
 
-+ src\exceptions\users\LimitChangesPasswordException -> See [LimitChangesPasswordException](src\exceptions\users\LimitChangesPasswordException.php "LimitChangesPasswordException")
++ src\exceptions\users\LimitChangesPasswordException -> See [LimitChangesPasswordException](src/exceptions/users/LimitChangesPasswordException.php "LimitChangesPasswordException")
 
-+ src\exceptions\users\RegisterException -> See [RegisterException](src\exceptions\users\RegisterException.php "RegisterException")
++ src\exceptions\users\RegisterException -> See [RegisterException](src/exceptions/users/RegisterException.php "RegisterException")
 
-+ src\exceptions\users\UserException -> See [UserException](src\exceptions\users\UserException.php "UserException")
++ src\exceptions\users\UserException -> See [UserException](src/exceptions/users/UserException.php "UserException")
 
-+ src\exceptions\users\UserNotFoundException -> See [UserNotFoundException](src\exceptions\users\UserNotFoundException.php "UserNotFoundException")
++ src\exceptions\users\UserNotFoundException -> See [UserNotFoundException](src/exceptions/users/UserNotFoundException.php "UserNotFoundException")
 
 **Tokens:**
-+ src\exceptions\tokens\RelationShipTokenException -> See [RelationShipTokenException](src\exceptions\tokens\RelationShipTokenException.php "RelationShipTokenException")
++ src\exceptions\tokens\RelationShipTokenException -> See [RelationShipTokenException](src/exceptions/tokens/RelationShipTokenException.php "RelationShipTokenException")
 
-+ src\exceptions\tokens\TokenException -> See [TokenException](src\exceptions\tokens\TokenException.php "TokenException")
++ src\exceptions\tokens\TokenException -> See [TokenException](src/exceptions/tokens/TokenException.php "TokenException")
 
-+ src\exceptions\tokens\TokenExpiredException -> See [TokenExpiredException](src\exceptions\tokens\TokenExpiredException.php "TokenExpiredException")
++ src\exceptions\tokens\TokenExpiredException -> See [TokenExpiredException](src/exceptions/tokens/TokenExpiredException.php "TokenExpiredException")
 
-+ src\exceptions\tokens\TokenNotFoundException -> See [TokenNotFoundException](src\exceptions\tokens\TokenNotFoundException.php "TokenNotFoundException")
++ src\exceptions\tokens\TokenNotFoundException -> See [TokenNotFoundException](src/exceptions/tokens/TokenNotFoundException.php "TokenNotFoundException")
 
-+ src\exceptions\tokens\TokenSaveException -> See [TokenSaveException](src\exceptions\tokens\TokenSaveException.php "TokenSaveException")
++ src\exceptions\tokens\TokenSaveException -> See [TokenSaveException](src/exceptions/tokens/TokenSaveException.php "TokenSaveException")
 
 **Roles and Permissions:**
-+ src\exceptions\roles\EmptyPermissionNameException -> See [EmptyPermissionNameException](src\exceptions\roles\EmptyPermissionNameException.php "EmptyPermissionNameException")
++ src\exceptions\roles\EmptyPermissionNameException -> See [EmptyPermissionNameException](src/exceptions/roles/EmptyPermissionNameException.php "EmptyPermissionNameException")
 
-+ src\exceptions\roles\EmptyRoleNameException -> See [EmptyRoleNameException](src\exceptions\roles\EmptyRoleNameException.php "EmptyRoleNameException")
++ src\exceptions\roles\EmptyRoleNameException -> See [EmptyRoleNameException](src/exceptions/roles/EmptyRoleNameException.php "EmptyRoleNameException")
 
-+ src\exceptions\roles\MissingRoleOrPermissionException -> See [MissingRoleOrPermissionException](src\exceptions\roles\MissingRoleOrPermissionException.php "MissingRoleOrPermissionException")
++ src\exceptions\roles\MissingRoleOrPermissionException -> See [MissingRoleOrPermissionException](src/exceptions/roles/MissingRoleOrPermissionException.php "MissingRoleOrPermissionException")
 
-+ src\exceptions\roles\PermissionNotFoundException -> See [PermissionNotFoundException](src\exceptions\roles\PermissionNotFoundException.php "PermissionNotFoundException")
++ src\exceptions\roles\PermissionNotFoundException -> See [PermissionNotFoundException](src/exceptions/roles/PermissionNotFoundException.php "PermissionNotFoundException")
 
-+ src\exceptions\roles\PermissionSaveException -> See [PermissionSaveException](src\exceptions\roles\PermissionSaveException.php "PermissionSaveException")
++ src\exceptions\roles\PermissionSaveException -> See [PermissionSaveException](src/exceptions/roles/PermissionSaveException.php "PermissionSaveException")
 
-+ src\exceptions\roles\RoleAssignmentException -> See [RoleAssignmentException](src\exceptions\roles\RoleAssignmentException.php "RoleAssignmentException")
++ src\exceptions\roles\RoleAssignmentException -> See [RoleAssignmentException](src/exceptions/roles/RoleAssignmentException.php "RoleAssignmentException")
 
-+ src\exceptions\roles\RoleNotAssignedException -> See [RoleNotAssignedException](src\exceptions\roles\RoleNotAssignedException.php "RoleNotAssignedException")
++ src\exceptions\roles\RoleNotAssignedException -> See [RoleNotAssignedException](src/exceptions/roles/RoleNotAssignedException.php "RoleNotAssignedException")
 
-+ src\exceptions\roles\RoleNotFoundException -> See [RoleNotFoundException](src\exceptions\roles\RoleNotFoundException.php "RoleNotFoundException")
++ src\exceptions\roles\RoleNotFoundException -> See [RoleNotFoundException](src/exceptions/roles/RoleNotFoundException.php "RoleNotFoundException")
 
-+ src\exceptions\roles\RoleNotSelectedException -> See [RoleNotSelectedException](src\exceptions\roles\RoleNotSelectedException.php "RoleNotSelectedException")
++ src\exceptions\roles\RoleNotSelectedException -> See [RoleNotSelectedException](src/exceptions/roles/RoleNotSelectedException.php "RoleNotSelectedException")
 
-+ src\exceptions\roles\RolePermissionAlreadyExistsException -> See [RolePermissionAlreadyExistsException](src\exceptions\roles\RolePermissionAlreadyExistsException.php "RolePermissionAlreadyExistsException")
++ src\exceptions\roles\RolePermissionAlreadyExistsException -> See [RolePermissionAlreadyExistsException](src/exceptions/roles/RolePermissionAlreadyExistsException.php "RolePermissionAlreadyExistsException")
 
-+ src\exceptions\roles\RolePermissionException -> See [RolePermissionException](src\exceptions\roles\RolePermissionException.php "RolePermissionException")
++ src\exceptions\roles\RolePermissionException -> See [RolePermissionException](src/exceptions/roles/RolePermissionException.php "RolePermissionException")
 
-+ src\exceptions\roles\RoleSaveException -> See [RoleSaveException](src\exceptions\roles\RoleSaveException.php "RoleSaveException")
++ src\exceptions\roles\RoleSaveException -> See [RoleSaveException](src/exceptions/roles/RoleSaveException.php "RoleSaveException")
 
-+ src\exceptions\roles\RolesException -> See [RolesException](src\exceptions\roles\RolesException.php "RolesException")
++ src\exceptions\roles\RolesException -> See [RolesException](src/exceptions/roles/RolesException.php "RolesException")
 
-+ src\exceptions\roles\UsedPermissionNameException -> See [UsedPermissionNameException](src\exceptions\roles\UsedPermissionNameException.php "UsedPermissionNameException")
++ src\exceptions\roles\UsedPermissionNameException -> See [UsedPermissionNameException](src/exceptions/roles/UsedPermissionNameException.php "UsedPermissionNameException")
 
-+ src\exceptions\roles\UsedRoleNameException -> See [UsedRoleNameException](src\exceptions\roles\UsedRoleNameException.php "UsedRoleNameException")
++ src\exceptions\roles\UsedRoleNameException -> See [UsedRoleNameException](src/exceptions/roles/UsedRoleNameException.php "UsedRoleNameException")
 
 
 As we explain the code, we will see when and how exceptions are used.
@@ -390,18 +390,21 @@ Finally, regarding "registration," we have the option to register multiple users
 
 To do this, you could use a for loop like this:
 ```php
+require __DIR__ . '/vendor/autoload.php';
+
+use src\Logger;
+
+$config = __DIR__ . '/config/config.php';
+$databaseConfig = __DIR__ . '/config/config-db.php';
+
+$dulceAuth = new src\DulceAuth([$config, $databaseConfig]);
+
 $count = 3;
 
 for ($i = 1; $i <= $count; $i++) {
     try {
-
-        $configPath = __DIR__ . '/config/config.php';
-
-        $dulceAuth = new src\DulceAuth($configPath);
-
         $register = $dulceAuth->register("Test$i", "test$i@demo.com", "1234", ["verified" => 1]);
         echo "User test$i registered successfully.\n";
-        var_dump($register);
     } catch (Exception $ex) {
         echo "Error registering the user {$i}: {$ex->getMessage()}\n";
         Logger::error($ex->getMessage(), $ex->getTraceAsString());
@@ -949,7 +952,7 @@ If we want to create a new role, simply call the **createRole** function, passin
 For example:
 ```php
 try {
-    $dulceAuth->createRole('new_role_name');
+    $dulceAuth->createRole('new_role_name', 'description');
 } catch (EmptyRoleNameException $ex) {
     Logger::error($ex->getMessage(), $ex->getTraceAsString());
     echo $ex->getMessage();
@@ -964,18 +967,21 @@ try {
 Or:
 ```php
 try {
-    $dulceAuth->createRole('new_role_name');
+    $dulceAuth->createRole('new_role_name', 'description');
 } catch (RolesException $ex) {
     Logger::error($ex->getMessage(), $ex->getTraceAsString());
     echo $ex->getMessage();
 }
 ```
+> **Note:** The **description** is optional.
+
 ## Edit a Role ##
-To edit a role, use the method: `editRole(int $roleId, string $name)`:
+To edit a role, use the method: `editRole(int $roleId, string $name, ?string $description = null)`:
 where the first parameter is the role ID and the second is the new name we want to assign.
+Again, the description is optional.
 ```php
 try {
-    $dulceAuth->editRole(10, 'new_name');
+    $dulceAuth->editRole(10, 'new_name', 'description');
 } catch (RoleNotFoundException $ex) {
     Logger::error($ex->getMessage(), $ex->getTraceAsString());
     echo $ex->getMessage();
@@ -993,7 +999,7 @@ try {
 Or also:
 ```php
 try {
-    $dulceAuth->editRole(10, 'new_name');
+    $dulceAuth->editRole(10, 'new_name', 'description');
 } catch (RolesException $ex) {
     Logger::error($ex->getMessage(), $ex->getTraceAsString());
     echo $ex->getMessage();
@@ -1069,7 +1075,7 @@ try {
 Permissions are related to roles and vice versa. A user will have certain permissions depending on the role they have, so it is advisable to create a list of permissions. The number of roles and permissions we want to create will depend on the type of application and authorization we want to implement.
 
 ## Create Permission ##
-To start, if we want to create a new permission, we need to use the method **createPermission**: `createPermission(string $name, string $description): bool`
+To start, if we want to create a new permission, we need to use the method **createPermission**: `createPermission(string $name, ?string $description = null): bool`
 
 This method takes two parameters (name and description). The description is optional but useful.
 
@@ -1091,9 +1097,9 @@ try {
 }
 ```
 ## Edit Permission ##
-If we want to edit the name of an already created permission, we need to call the method **editPermission**: `editPermission(int $permissionId, string $newName): bool`
-
+If we want to edit the name of an already created permission, we need to call the method **editPermission**: `editPermission(int $permissionId, string $newName, ?string $description = null): bool`
 This method takes two parameters: an integer and a string. The integer represents the ID of the permission, and the string represents the new name we want to assign to it.
+Optionally and once again, the description is optional but advisable.
 
 For example:
 ```php
