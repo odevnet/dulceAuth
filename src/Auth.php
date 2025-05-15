@@ -158,27 +158,27 @@ class Auth
                 // If it exists, the exception is thrown
                 throw new DuplicateEmailException();
             } else {
-                $this->userModel->name = $name;
-                $this->userModel->email = $email;
-                $this->userModel->password = password_hash($password, PASSWORD_BCRYPT);
-
+                $user = new $this->userModel;
+                $user->name = $name;
+                $user->email = $email;
+                $user->password = password_hash($password, PASSWORD_BCRYPT);
                 // Set default values for 'verified' and 'visibility' (see config file)
-                $this->userModel->verified = $options['verified'] ?? VERIFIED;
-                $this->userModel->visibility = $options['visibility'] ?? DEFAULT_VISIBILITY;
+                $user->verified = $options['verified'] ?? VERIFIED;
+                $user->visibility = $options['visibility'] ?? DEFAULT_VISIBILITY;
 
                 // Loop through the array of options and set the corresponding values in the model
                 foreach ($options as $key => $value) {
                     // If 'verified' or 'visibility' was already set, it is not set again
                     if ($key !== 'verified' && $key !== 'visibility') {
-                        $this->userModel->{$key} = $value;
+                        $user->{$key} = $value;
                     }
                 }
 
-                if ($this->userModel->save()) {
+                if ($user->save()) {
                     // Assign the "User" role to the newly registered user
                     $userRole = $this->roleModel::where('name', 'User')->first();
                     if ($userRole) {
-                        $this->userModel->roles()->attach($userRole->id);
+                        $user->roles()->attach($userRole->id);
                     }
 
                     if ($options['verified'] ?? VERIFIED === '1') {
@@ -191,7 +191,7 @@ class Auth
                         // and 'the token' to later be able to use it in an email.
                         // See readme file for more detailed information...
                         $token = bin2hex(random_bytes(32)); // Generate a random token
-                        $this->userModel->accountVerification()->create([
+                        $user->accountVerification()->create([
                             'token' => $token,
                             'expires_at' => date('Y-m-d H:i:s', strtotime('+1 day')), // Here you can adjust the expiration time according to your needs
                         ]);
@@ -199,7 +199,7 @@ class Auth
                         // If the account is not verified, send verification email
                         $verificationMail = new DulceMail();
                         $verificationMail->from(EMAIL_FROM);
-                        $verificationMail->sendVerificationEmail($email, $token, $this->userModel->id, true);
+                        $verificationMail->sendVerificationEmail($email, $token, $user->id, true);
                     }
                     // Confirm the transaction if everything has been executed correctly
                     DB::commit();
