@@ -12,7 +12,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
  *
  * @package src
  *
- * @since 2.0.0
+ * @since 1.0.0
  */
 class Bootstrap
 {
