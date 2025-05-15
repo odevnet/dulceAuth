@@ -51,8 +51,8 @@ class PermissionManagement
     /**
      * This method allows you to create a permission.
      *
-     * @param string $name        Permission name.
-     * @param string $description Description of the permission.
+     * @param string $name Permission name.
+     * @param ?string $description Optional description of the permission.
      *
      * @return bool True if the permission was created successfully, false
      * if there was an error.
@@ -64,7 +64,7 @@ class PermissionManagement
      * @throws \src\exceptions\roles\PermissionSaveException
      * If occurs an error creating the permission.
      */
-    public function createPermission(string $name, string $description): bool
+    public function createPermission(string $name, ?string $description = null): bool
     {
         // Validate that the name is not empty and that there is no other permission with the same name.
         if (empty($name)) {
@@ -75,7 +75,7 @@ class PermissionManagement
         }
         // Create the new permission.
         $this->permissionModel->name = $name;
-        $this->permissionModel->description = $description;
+        $this->permissionModel->description = ($description !== null) ? $description : null;
         if ($this->permissionModel->save()) {
             //echo 'Permission created successfully!';
             return true;
@@ -103,7 +103,7 @@ class PermissionManagement
      * @throws \src\exceptions\roles\PermissionNotFoundException
      * If don't exist the permission.
      */
-    public function editPermission(int $permissionId, string $newName): bool
+    public function editPermission(int $permissionId, string $newName, ?string $newDescription = null): bool
     {
         if (!is_string($newName)) {
             throw new \InvalidArgumentException('The second parameter must be a string.');
@@ -111,13 +111,19 @@ class PermissionManagement
         if (empty($newName)) {
             throw new EmptyPermissionNameException();
         }
-        if ($this->permissionModel::where('name', $newName)->exists()) {
+        if (
+            $this->permissionModel::where('name', $newName)
+            ->where('id', '!=', $permissionId)
+            ->exists()
+        ) {
             throw new UsedPermissionNameException();
         }
+
 
         $permission = $this->permissionModel::find($permissionId);
         if ($permission) {
             $permission->name = $newName;
+            $permission->description = ($newDescription !== null) ? $newDescription : null;
             if ($permission->save()) {
                 return true;
             } else {
