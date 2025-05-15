@@ -73,7 +73,7 @@ class AccountVerification extends Model
      *
      * @param \src\models\User|null $user 'User' instance.
      */
-    public function __construct(User $user = null)
+    public function __construct(?User $user = null)
     {
         $this->userModel = $user ?: new User();
         parent::__construct();
