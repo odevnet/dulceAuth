@@ -239,7 +239,7 @@ class DulceAuth
      */
     public function register(string $name, string $email, string $password, array $options = [])
     {
-        return $this->auth->register($name, $email, $password, $options = []);
+        return $this->auth->register($name, $email, $password, $options);
     }
     /**
      * Delegates the verification of if a user is authenticated or not
@@ -625,18 +625,33 @@ class DulceAuth
     }
 
     /**
+     * Get a role by its id.
+     * Delegates to the 'find' method of the 'Role' model.
+     *
+     * @param int $id Role ID
+     * @return int
+     *
+     * @see \src\models\Role::find
+     */
+    public function getRoleById(int $id)
+    {
+        return $this->roleModel->find($id);
+    }
+
+    /**
      * Create a new role delegating its creation to the 'createRole' method
      * from class 'RoleManagement'.
      *
      * @param string $name Role name.
+     * @param ?string $description Optional description of the role.
      *
      * @return bool
      *
      * @see \src\RoleManagement::createRole
      */
-    public function createRole(string $name)
+    public function createRole(string $name, ?string $description = null)
     {
-        return $this->roleManagement->createRole($name);
+        return $this->roleManagement->createRole($name, $description);
     }
 
     /**
@@ -644,14 +659,15 @@ class DulceAuth
      *
      * @param int $roleId ID of the role.
      * @param string $name New name of the role.
+     * @param ?string $description Optional new description of the role.
      *
      * @return bool
      *
      * @see \src\RoleManagement::editRole
      */
-    public function editRole(int $roleId, string $name)
+    public function editRole(int $roleId, string $name, ?string $description = null)
     {
-        return $this->roleManagement->editRole($roleId, $name);
+        return $this->roleManagement->editRole($roleId, $name, $description);
     }
 
     /**
@@ -699,17 +715,32 @@ class DulceAuth
     }
 
     /**
+     * Get a permission by its id.
+     * Delegates to the 'find' method of the 'Permission' model.
+     *
+     * @param int $id Permission ID
+     * @return int
+     *
+     * @see \src\models\Permission::find
+     */
+    public function getPermissionById(int $id)
+    {
+        return $this->permissionModel->find($id);
+    }
+
+
+    /**
      * Create a new permission. Delegate the creation to the 'createPermission' method
      * from class 'PermissionManagement'.
      *
      * @param string $name Name of the permission.
-     * @param string $description Description of the permission.
+     * @param ?string $description Optional description of the permission.
      *
      * @return bool
      *
      * @see \src\PermissionManagement::createPermission
      */
-    public function createPermission(string $name, string $description)
+    public function createPermission(string $name, ?string $description = null)
     {
         return $this->permissionManagement->createPermission($name, $description);
     }
@@ -719,14 +750,15 @@ class DulceAuth
      *
      * @param int $permissionId ID of the permission.
      * @param string $newName New name of the permission.
+     * @param ?string $description Optional new description of the permission.
      *
      * @return bool
      *
      * @see \src\PermissionManagement::editPermission
      */
-    public function editPermission(int $permissionId, string $newName)
+    public function editPermission(int $permissionId, string $newName, ?string $description = null)
     {
-        return $this->permissionManagement->editPermission($permissionId, $newName);
+        return $this->permissionManagement->editPermission($permissionId, $newName, $description);
     }
 
     /**
