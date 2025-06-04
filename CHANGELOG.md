@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.0.1] - 2025-06-04
+
+### Fixed
+- Fixed connection array keys in `Bootstrap.php` (from `'dulce_auth_driver'` to `'driver'`, etc.) for Eloquent compatibility.
+- Fixed *Config file* and *Database configuration file* section of `README.md` file.
+
 ## [2.0.0] - 2025-06-04
 
 ### Changed
