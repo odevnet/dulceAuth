@@ -128,7 +128,7 @@ class Auth
             $this->session->set('userId', $userId);
 
             // Set the expiration time variable
-            $this->session->set('expire_time', time() + SESSION_EXPIRATION);
+            $this->session->set('expire_time', time() + DULCE_AUTH_SESSION_EXPIRATION);
             return true;
         } else {
             return false;
@@ -163,8 +163,8 @@ class Auth
                 $user->email = $email;
                 $user->password = password_hash($password, PASSWORD_BCRYPT);
                 // Set default values for 'verified' and 'visibility' (see config file)
-                $user->verified = $options['verified'] ?? VERIFIED;
-                $user->visibility = $options['visibility'] ?? DEFAULT_VISIBILITY;
+                $user->verified = $options['verified'] ?? DULCE_AUTH_VERIFIED;
+                $user->visibility = $options['visibility'] ?? DULCE_AUTH_DEFAULT_VISIBILITY;
 
                 // Loop through the array of options and set the corresponding values in the model
                 foreach ($options as $key => $value) {
@@ -181,7 +181,7 @@ class Auth
                         $user->roles()->attach($userRole->id);
                     }
 
-                    if ($options['verified'] ?? VERIFIED === '1') {
+                    if ($options['verified'] ?? DULCE_AUTH_VERIFIED === '1') {
                         // If account is verified, login
                         $this->login($email, $password);
                     } else {
@@ -198,7 +198,7 @@ class Auth
 
                         // If the account is not verified, send verification email
                         $verificationMail = new DulceMail();
-                        $verificationMail->from(EMAIL_FROM);
+                        $verificationMail->from(DULCE_AUTH_EMAIL_FROM);
                         $verificationMail->sendVerificationEmail($email, $token, $user->id, true);
                     }
                     // Confirm the transaction if everything has been executed correctly

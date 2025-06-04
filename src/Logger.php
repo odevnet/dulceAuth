@@ -32,6 +32,6 @@ class Logger
      */
     public static function error(string $message, string $trace): void
     {
-        error_log('[' . date('Y-m-d H:i:s') . '] [ERROR] ' . $message . "\n" . $trace . "\n", 3, LOG_FILE);
+        error_log('[' . date('Y-m-d H:i:s') . '] [ERROR] ' . $message . "\n" . $trace . "\n", 3, DULCE_AUTH_LOG_FILE);
     }
 }

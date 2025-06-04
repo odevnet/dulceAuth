@@ -41,14 +41,14 @@ class Bootstrap
         // Inicializa Capsule (Eloquent)
         $this->capsule = new Capsule;
         $this->capsule->addConnection([
-            'driver' => $config->get('DRIVER'),
-            'host' => $config->get('HOST'),
-            'database' => $config->get('DATABASE'),
-            'username' => $config->get('USERNAME'),
-            'password' => $config->get('PASSWORD'),
-            'charset' => $config->get('CHARSET'),
-            'collation' => $config->get('COLLATION'),
-            'prefix' => $config->get('PREFIX'),
+            'dulce_auth_driver' => $config->get('DULCE_AUTH_DRIVER'),
+            'dulce_auth_host' => $config->get('DULCE_AUTH_HOST'),
+            'dulce_auth_database' => $config->get('DULCE_AUTH_DATABASE'),
+            'dulce_auth_username' => $config->get('DULCE_AUTH_USERNAME'),
+            'dulce_auth_password' => $config->get('DULCE_AUTH_PASSWORD'),
+            'dulce_auth_charset' => $config->get('DULCE_AUTH_CHARSET'),
+            'dulce_auth_collation' => $config->get('DULCE_AUTH_COLLATION'),
+            'dulce_auth_prefix' => $config->get('DULCE_AUTH_PREFIX'),
         ]);
         $this->capsule->setAsGlobal();
         $this->capsule->bootEloquent();

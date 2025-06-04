@@ -74,7 +74,7 @@ class PasswordReset extends Model
      * @param \src\models\User|null $user User instance to associate with the
      * password reset.
      */
-    public function __construct(User $user = null)
+    public function __construct(?User $user = null)
     {
         $this->userModel = $user ?: new User();
         parent::__construct();
@@ -137,7 +137,7 @@ class PasswordReset extends Model
                 //return ['userId' => $userId, 'token' => $token];
                 if ($send) {
                     $verificationMail = new \src\DulceMail();
-                    $verificationMail->from(EMAIL_FROM);
+                    $verificationMail->from(DULCE_AUTH_EMAIL_FROM);
                     $verificationMail->sendForgotPasswordEmail($email, $token, $userId, true);
                 } else {
                     return ['userId' => $userId, 'token' => $token];

@@ -218,7 +218,7 @@ class AccountVerification extends Model
             //return ['userId' => $user_id, 'token' => $token];
             if ($send) {
                 $verificationMail = new \src\DulceMail();
-                $verificationMail->from(EMAIL_FROM);
+                $verificationMail->from(DULCE_AUTH_EMAIL_FROM);
                 $verificationMail->sendVerificationEmail($email, $token, $user->id, true);
             } else {
                 return ['userId' => $user->id, 'token' => $token];

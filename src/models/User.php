@@ -255,8 +255,8 @@ class User extends Model
             $this->name = $name;
             $this->email = $email;
             $this->password = password_hash($password, PASSWORD_BCRYPT);
-            $this->verified = $options['verified'] ?? VERIFIED;
-            $this->visibility = $options['visibility'] ?? DEFAULT_VISIBILITY;
+            $this->verified = $options['verified'] ?? DULCE_AUTH_VERIFIED;
+            $this->visibility = $options['visibility'] ?? DULCE_AUTH_DEFAULT_VISIBILITY;
 
             // Runs through options of array and set the corresponding values in the model
             foreach ($options as $key => $value) {
@@ -384,7 +384,7 @@ class User extends Model
             }
 
             // Checks if the user has reached the limit of password changes per year
-            if ($latestChange->changes_count < MAX_PASSWORD_CHANGES) {
+            if ($latestChange->changes_count < DULCE_AUTH_MAX_PASSWORD_CHANGES) {
                 // Encrypt or hash passwords
                 $oldPasswordHash = password_hash($currentPassword, PASSWORD_BCRYPT);
                 $newPasswordHash = password_hash($newPassword, PASSWORD_BCRYPT);
