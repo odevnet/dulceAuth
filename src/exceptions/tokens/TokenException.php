@@ -30,7 +30,7 @@ class TokenException extends \Exception
      * @param int $code The exception code.
      * @param \Exception|null $previous The previous exception for exception chaining.
      */
-    public function __construct($message = 'Error TokenException', $code = 0, \Exception $previous = null)
+    public function __construct($message = 'Error TokenException', $code = 0, ?\Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }

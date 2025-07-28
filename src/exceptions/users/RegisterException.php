@@ -33,7 +33,7 @@ class RegisterException extends UserException
     public function __construct(
         $message = 'There was a problem registering the user.',
         $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

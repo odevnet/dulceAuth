@@ -33,7 +33,7 @@ class UsedRoleNameException extends RolesException
     public function __construct(
         $message = 'The new role name is already in use by another role.',
         $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

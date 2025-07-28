@@ -34,7 +34,7 @@ class ArrayOptionsUserException extends UserException
     public function __construct(
         $message = 'Array options cannot be empty.',
         $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

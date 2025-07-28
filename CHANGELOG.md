@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.0.2] - 2025-07-28
+
+### Fixed
+- Fixed explicit nullable type of `$previous` parameter in multiple exception classes to avoid deprecated warnings in PHP 8.1 and above.
+
 ## [2.0.1] - 2025-06-04
 
 ### Fixed

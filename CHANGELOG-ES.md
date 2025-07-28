@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.0.2] - 2025-07-28
+
+### Fixed
+- Corregido el tipo nullable explícito del parámetro `$previous` en múltiples clases de excepción para evitar advertencias deprecadas en PHP 8.1 y superior.
+
 ## [2.0.1] - 2025-06-04
 
 ### Fixed

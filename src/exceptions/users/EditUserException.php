@@ -33,7 +33,7 @@ class EditUserException extends UserException
     public function __construct(
         $message = 'Error editing user',
         $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

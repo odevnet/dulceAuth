@@ -34,7 +34,7 @@ class RolePermissionAlreadyExistsException extends RolePermissionException
     public function __construct(
         $message = 'The role already has that permission assigned.',
         $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

@@ -34,7 +34,7 @@ class PermissionSaveException extends RolePermissionException
     public function __construct(
         $message = 'Error saving the permission.',
         $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

@@ -33,7 +33,7 @@ class UsedPermissionNameException extends RolePermissionException
     public function __construct(
         $message = 'The new permission name is already in use by another permission.',
         $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

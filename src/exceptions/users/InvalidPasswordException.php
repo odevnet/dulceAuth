@@ -33,7 +33,7 @@ class InvalidPasswordException extends UserException
     public function __construct(
         $message = 'The current password is not valid.',
         $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

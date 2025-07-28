@@ -33,7 +33,7 @@ class TokenExpiredException extends TokenException
     public function __construct(
         $message = 'The token has already expired.',
         $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

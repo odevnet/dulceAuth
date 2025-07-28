@@ -26,7 +26,7 @@ class RolePermissionException extends \Exception
     public function __construct(
         $message = 'Permissions error',
         $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

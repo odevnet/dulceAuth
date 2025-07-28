@@ -33,7 +33,7 @@ class TokenSaveException extends TokenException
     public function __construct(
         $message = 'An error occurred while saving the token.',
         $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

@@ -34,7 +34,7 @@ class RoleNotAssignedException extends RolesException
     public function __construct(
         $message = 'The user does not have the specified role.',
         $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }

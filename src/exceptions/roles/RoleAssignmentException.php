@@ -33,7 +33,7 @@ class RoleAssignmentException extends RolesException
     public function __construct(
         $message = 'An error occurred while assigning the role to the user.',
         $code = 0,
-        \Exception $previous = null
+        ?\Exception $previous = null
     ) {
         parent::__construct($message, $code, $previous);
     }
