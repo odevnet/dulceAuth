@@ -29,6 +29,7 @@ class Install
             'config-db.php' => 'config/config-db.php',
             'verification_email.json' => 'config/verification_email.json',
             'forgot_password_email.json' => 'config/forgot_password_email.json',
+            'otp_email.json' => 'config/otp_email.json',
             'log_file.log' => 'logs/log_file.log',
         ];
 
