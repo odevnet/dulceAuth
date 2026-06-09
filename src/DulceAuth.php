@@ -224,6 +224,7 @@ class DulceAuth
     {
         return $this->auth->login($email, $password);
     }
+
     /**
      * Register a new user delegating the registration process to the method
      * 'register' of class 'Auth'.
@@ -241,6 +242,7 @@ class DulceAuth
     {
         return $this->auth->register($name, $email, $password, $options);
     }
+
     /**
      * Delegates the verification of if a user is authenticated or not
      * to the 'isLoggedIn' method of the 'Auth' class.
@@ -265,6 +267,7 @@ class DulceAuth
     {
         return $this->auth->logout();
     }
+
     /**
      * Delegates getting the currently authenticated user to the method
      * 'currentUser' from class 'Auth'.
@@ -894,5 +897,45 @@ class DulceAuth
         }
 
         return $permissionName;
+    }
+    /**
+     * Verify the One-Time Password (OTP) provided by the user.
+     *
+     * This method delegates the OTP verification process to the underlying
+     * authentication component. If the code is valid and has not expired,
+     * the user's authentication process is completed.
+     *
+     * @param string $code The OTP code entered by the user.
+     *
+     * @return bool Returns true if the OTP is valid and the user is
+     *              successfully authenticated, false otherwise.
+     *
+     * @throws \Exception If an unexpected error occurs during verification.
+     *
+     * @since 2.1.0
+     */
+    public function verifyOtp(string $code): bool
+    {
+        return $this->auth->verifyOtp($code);
+    }
+
+    /**
+     * Generate and send a new One-Time Password (OTP) code.
+     *
+     * This method delegates the OTP regeneration and delivery process
+     * to the underlying authentication component for a pending
+     * authentication request.
+     *
+     * @return bool Returns true if the OTP was successfully generated
+     *              and sent, false otherwise.
+     *
+     * @throws \Exception If an unexpected error occurs during the
+     *                    OTP generation or delivery process.
+     *
+     * @since 2.1.0
+     */
+    public function resendOtp(): bool
+    {
+        return $this->auth->resendOtp();
     }
 }

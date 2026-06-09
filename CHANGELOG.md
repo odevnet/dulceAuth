@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.1.0] - 2026-06-09
+
+### Added
+- Implementation of two-step verification (OTP via email).
+  - New methods in `Auth.php`: `generateOtpCode()`, `verifyOtp()`, `resendOtp()`.
+  - New method in `DulceMail.php`: `sendOtpEmail()` and `sendOtpTemplate()`.
+  - New configuration file `otp_email.json` to customize the content of the OTP email and the on-screen message.
+  - New configuration constants in `config.php` to enable/disable email 2FA and define OTP expiration.
+
 ## [2.0.2] - 2025-07-28
 
 ### Fixed

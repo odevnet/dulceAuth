@@ -28,7 +28,7 @@
 	"prefer-stable": true,
 	"require": {
 		"php": ">=8.1.0",
-		"illuminate/database": "^11.20",
-		"laravel/serializable-closure": "^1.2 || ^2.0"
+		"illuminate/database": "^11.45",
+		"laravel/serializable-closure": "^2.0"
 	}
 }

@@ -36,6 +36,7 @@ Algunas caracteristicas:
     3. [Un caso excepcional](#un-caso-excepcional-o-no)
 6. [Constantes personalizadas](#custom_verification_email_url-y-custom_forgot_password_email_url)
 7. [Login](#login)
+    1. [2FA por email](#autenticación-en-dos-pasos-otp)
 8. [Usuarios](#users)
     1. [¿Existe?](#el-usuario-existe)
     2. [Editar usuario](#edición-de-usuarios)
@@ -208,6 +209,12 @@ define('DULCE_AUTH_SESSION_EXPIRATION', 60 * 60); // session lifetime.
 //For 2 days: define('DULCE_AUTH_SESSION_EXPIRATION', 60 * 60 * 24 * 2);
 //For 7 days: define('DULCE_AUTH_SESSION_EXPIRATION', 60 * 60 * 24 * 7);
 //For 1 hour: define('DULCE_AUTH_SESSION_EXPIRATION', 60 * 60);
+
+// Doble factor de autenticación (2FA) por email
+define('DULCE_AUTH_EMAIL_2FA', true); // activar 2FA por email
+define('DULCE_AUTH_FROM_EMAIL', 'no-reply@yourwebsite.com');
+define('DULCE_AUTH_EMAIL_OTP_EXPIRY_MINUTES', 10); // si quieres cambiar la expiración
+define('DULCE_AUTH_EMAIL_OTP_SUBJECT', 'Tu código de verificación');
 ```
 ## Archivo configuración de la base de datos
 También durante la instalación, se ha creado un archivo llamado **config-db.php** que sirve para configurar los datos de
@@ -250,6 +257,19 @@ Y el archivo **forgot_password_email.json** contiene:
 	}
 }
 ```
+
+Desde la versión 2.1.0 que también se crea un nuevo archivo llamado **otp_email.json** para la verificación en dos pasos (2FA) por email, con el siguiente contenido:
+```json
+{
+    "otp": {
+        "type": "otp",
+        "subject": "Login Verification Code",
+        "message": "Your verification code is: {{otp_code}}\n\nThis code will expire in {{expiration_minutes}} minutes.\n\nIf you did not attempt to sign in, please ignore this email.",
+        "screen_message": "We have just sent a verification code to your email address. Please check your inbox."
+    }
+}
+```
+
 
 # Uso de excepciones
 Las excepciones se encuentran organizadas según el tipo, es decir, si estan relacionadas con los roles, tokens o usuarios.
@@ -650,6 +670,29 @@ Si tenemos un campo para el pais llamado "country" podemos hacer:
 $dulceAuth->currentUser()->country;
 ```
 Y así para cada campo que queramos mostrar del usuario actualmente conectado.
+
+## Autenticación en dos pasos (OTP)
+A partir de la versión 2.1.0, dulceAuth incorpora soporte para autenticación en dos pasos (2FA) mediante códigos OTP enviados por correo electrónico.
+Para habilitar esta funcionalidad, simplemente debemos definir la constante *DULCE_AUTH_EMAIL_2FA* en el archivo de configuración como *true*:
+```php
+define('DULCE_AUTH_EMAIL_2FA', true);
+```
+Cuando esta funcionalidad está habilitada, el usuario deberá:
+
+ 1. Iniciar sesión con su correo electrónico y contraseña.
+ 2. Recibir un código OTP de 6 dígitos en su dirección de correo electrónico.
+ 3. Introducir el código recibido para completar el proceso de autenticación.
+
+Para verificar el código OTP, tenemos disponible el siguiente método:
+```php
+$dulceAuth->verifyOtp($code)
+```
+Este método devolverá **true** si el código OTP es correcto y no ha expirado.
+
+Si necesitamos generar un nuevo código OTP (por ejemplo, si el usuario no recibe el correo o el código ha expirado), podemos usar el siguiente método:
+```php
+$dulceAuth->resendOtp()
+```
 
 # Users
 Existen varias opciones para mostrar una lista con todos los usuarios de la base de datos.

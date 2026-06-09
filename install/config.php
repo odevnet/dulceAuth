@@ -18,6 +18,8 @@ define('DULCE_AUTH_VERIFICATION_PAGE_URL', 'verification.php'); // default file 
 define('DULCE_AUTH_FORGOT_PASSWORD_EMAIL_JSON_FILE', DULCE_AUTH_BASE_DIR . '/config/forgot_password_email.json'); // json template for forgotten password email. Edit the text as you like
 define('DULCE_AUTH_FORGOT_PASSWORD_PAGE_URL', 'forgot.php'); // default file where the email data (token and user id) is captured
 
+define('DULCE_AUTH_OTP_EMAIL_JSON_FILE', DULCE_AUTH_BASE_DIR . '/config/otp_email.json'); // json template for OTP email. Edit the text as you like
+
 // Roles. At the moment do not modify anything!!
 define('DULCE_AUTH_DEFAULT_ROLE', 'User'); // default role
 define('DULCE_AUTH_DEFAULT_VISIBILITY', 'public'); // default profile visibility
@@ -32,3 +34,8 @@ define('DULCE_AUTH_SESSION_EXPIRATION', 60 * 60); // session lifetime.
 //For 2 days: define('DULCE_AUTH_SESSION_EXPIRATION', 60 * 60 * 24 * 2);
 //For 7 days: define('DULCE_AUTH_SESSION_EXPIRATION', 60 * 60 * 24 * 7);
 //For 1 hour: define('DULCE_AUTH_SESSION_EXPIRATION', 60 * 60);
+
+define('DULCE_AUTH_EMAIL_2FA', true); // activate 2FA via email
+define('DULCE_AUTH_FROM_EMAIL', 'no-reply@yourwebsite.com');
+define('DULCE_AUTH_EMAIL_OTP_EXPIRY_MINUTES', 10); // expiration time
+define('DULCE_AUTH_EMAIL_OTP_SUBJECT', 'Your verification code');

@@ -121,12 +121,47 @@ class Auth
             // Credentials are valid, user is authenticated
             // Access the user ID
             $userId = $user->id;
+
+            if (defined('DULCE_AUTH_EMAIL_2FA') && DULCE_AUTH_EMAIL_2FA === true) {
+                $this->session->start();
+                session_regenerate_id(true);
+
+                $code = $this->generateOtpCode();
+
+                $this->session->set('pending_2fa', true);
+                $this->session->set('pending_userId', $userId);
+                $this->session->set('otp_code', $code);
+                $this->session->set('otp_expires', time() + 600); // 10 min
+                $this->session->set('otp_sent_count', 1);
+
+                try {
+                    $mail = new DulceMail();
+                    $from = defined('DULCE_AUTH_FROM_EMAIL') ? DULCE_AUTH_FROM_EMAIL : 'no-reply@localhost';
+                    $mail->from($from)
+                        ->to($user->email)
+                        ->subject('Código de verificación')
+                        ->message('Tu código de verificación es: ' . $code . "\n\nEste código expirará en 10 minutos.");
+                    $mail->send();
+                } catch (\Throwable $e) {
+                    // Limpieza si falla el envío
+                    $this->session->remove('pending_2fa');
+                    $this->session->remove('pending_userId');
+                    $this->session->remove('otp_code');
+                    $this->session->remove('otp_expires');
+                    $this->session->remove('otp_sent_count');
+                    throw $e;
+                }
+
+                // Credenciales válidas pero login pendiente: primer paso completado
+                return true;
+            }
+
+            // Normal flow (without 2FA):
             // Create the session and register it with your user id later
             $this->session->start();
             // Renew session ID after successful login
             session_regenerate_id(true);
             $this->session->set('userId', $userId);
-
             // Set the expiration time variable
             $this->session->set('expire_time', time() + DULCE_AUTH_SESSION_EXPIRATION);
             return true;
@@ -220,5 +255,124 @@ class Auth
     public function logout(): void
     {
         $this->session->destroy();
+    }
+
+    /**
+     * Generate a new One-Time Password (OTP) code.
+     *
+     * @return string A randomly generated 6-digit OTP code (e.g., "483920").
+     *
+     * @since 2.1.0
+     */
+    private function generateOtpCode(): string
+    {
+        return str_pad((string)random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+    }
+
+    /**
+     * Verify the One-Time Password (OTP) provided by the user and complete
+     * the authentication process if the code is valid.
+     *
+     * This method validates the OTP code previously generated during the
+     * login process. If the code is correct and has not expired, the user
+     * session is finalized and the temporary OTP data is removed.
+     *
+     * @param string $code The OTP code entered by the user.
+     *
+     * @return bool Returns true if the OTP is valid and the user is
+     *              successfully authenticated, false otherwise.
+     *
+     * @throws \Exception If an unexpected error occurs during verification.
+     *
+     * @since 2.1.0
+     */
+    public function verifyOtp(string $code): bool
+    {
+        $this->session->start();
+
+        $pending = $this->session->get('pending_2fa');
+        $pendingUser = $this->session->get('pending_userId');
+        $storedCode = $this->session->get('otp_code');
+        $expires = $this->session->get('otp_expires');
+
+        if (empty($pending) || empty($pendingUser) || empty($storedCode) || empty($expires)) {
+            return false;
+        }
+
+        if (time() > (int)$expires) {
+            // Limpieza
+            $this->session->remove('pending_2fa');
+            $this->session->remove('pending_userId');
+            $this->session->remove('otp_code');
+            $this->session->remove('otp_expires');
+            return false;
+        }
+
+        if (hash_equals((string)$storedCode, (string)$code)) {
+            // Código correcto: completar login
+            $this->session->set('userId', $pendingUser);
+            $this->session->set('expire_time', time() + DULCE_AUTH_SESSION_EXPIRATION);
+
+            // Borrar datos temporales
+            $this->session->remove('pending_2fa');
+            $this->session->remove('pending_userId');
+            $this->session->remove('otp_code');
+            $this->session->remove('otp_expires');
+            $this->session->remove('otp_sent_count');
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Generate and send a new One-Time Password (OTP) code to the user.
+     *
+     * This method creates a new OTP code for a pending authentication
+     * request, updates its expiration time and sends it to the user's
+     * registered email address.
+     *
+     * @return bool Returns true if the OTP was successfully generated
+     *              and sent, false otherwise.
+     *
+     * @throws \Exception If an unexpected error occurs during the
+     *                    OTP generation or email delivery process.
+     *
+     * @since 2.1.0
+     */
+    public function resendOtp(): bool
+    {
+        $this->session->start();
+        $pendingUser = $this->session->get('pending_userId');
+
+        if (empty($pendingUser)) {
+            return false;
+        }
+
+        $code = $this->generateOtpCode();
+        $this->session->set('otp_code', $code);
+        $this->session->set('otp_expires', time() + 600); // 10 minutes
+
+        $sentCount = (int)$this->session->get('otp_sent_count', 0);
+        $this->session->set('otp_sent_count', $sentCount + 1);
+
+        try {
+            $user = $this->userModel::find($pendingUser);
+            if (!$user) {
+                return false;
+            }
+            $mail = new DulceMail();
+            $from = defined('DULCE_AUTH_FROM_EMAIL') ? DULCE_AUTH_FROM_EMAIL : 'no-reply@localhost';
+            $mail->from($from)
+                ->to($user->email)
+                ->subject('Verification code — resend')
+                ->message('Your new verification code is: ' . $code . "\n\nThis code will expire in 10 minutes.");
+            $mail->send();
+        } catch (\Throwable $e) {
+            return false;
+        }
+
+        return true;
     }
 }

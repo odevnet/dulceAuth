@@ -1,0 +1,8 @@
+{
+	"otp": {
+		"type": "otp",
+		"subject": "Login Verification Code",
+		"message": "Your verification code is: {{otp_code}}\n\nThis code will expire in {{expiration_minutes}} minutes.\n\nIf you did not attempt to sign in, please ignore this email.",
+		"screen_message": "We have just sent a verification code to your email address. Please check your inbox."
+	}
+}

@@ -296,4 +296,69 @@ class DulceMail
 
         return $templateData[$key];
     }
+
+    /**
+     * Send a One-Time Password (OTP) email to the specified recipient.
+     *
+     * @param string $to Destination email address.
+     * @param string $code OTP code.
+     * @param int $userId User ID.
+     * @param bool $show_screen_message Indicates whether a screen message
+     *                                  should be displayed.
+     *
+     * @return bool True if the email is sent successfully, otherwise false.
+     *
+     * @since 2.1.0
+     */
+    public function sendOtpEmail(string $to, string $code, int $userId = 0, bool $show_screen_message = false): bool
+    {
+        $template = $this->loadTemplate(DULCE_AUTH_OTP_EMAIL_JSON_FILE, 'otp');
+
+        return $this->sendOtpTemplate($to, $code, $userId, $template, $show_screen_message);
+    }
+
+    /**
+     * Send an OTP email using the provided template.
+     *
+     * @param string $to Destination email address.
+     * @param string $code OTP code.
+     * @param int $userId User ID.
+     * @param array $template Email template.
+     * @param bool $show_screen_message Indicates whether a screen message
+     *                                  should be displayed.
+     *
+     * @return bool
+     *
+     * @throws \RuntimeException If the email cannot be sent.
+     *
+     * @since 2.1.0
+     */
+    private function sendOtpTemplate(string $to, string $code, int $userId, array $template, bool $show_screen_message): bool
+    {
+        $subject = $template['subject'];
+
+        $minutes = defined('DULCE_AUTH_EMAIL_OTP_EXPIRY_MINUTES') ? DULCE_AUTH_EMAIL_OTP_EXPIRY_MINUTES : 10;
+
+        $message = str_replace(
+            ['{{otp_code}}', '{{expiration_minutes}}'],
+            [$code, $minutes],
+            $template['message']
+        );
+
+        $screen_message = $template['screen_message'];
+
+        $headers = "From:" . $this->from;
+
+        $success = mail($to, $subject, $message, $headers);
+
+        if (!$success) {
+            throw new RuntimeException("Failed to send email");
+        }
+
+        if ($show_screen_message) {
+            echo $screen_message;
+        }
+
+        return true;
+    }
 }

@@ -9,8 +9,8 @@ use src\exceptions\tokens\TokenException;
 
 use src\Logger;
 
-$config = __DIR__ . '/src/config/config.php';
-$databaseConfig = __DIR__ . '/src/config/config-db.php';
+$config = __DIR__ . '/config/config.php';
+$databaseConfig = __DIR__ . '/config/config-db.php';
 
 $dulceAuth = new src\DulceAuth([$config, $databaseConfig]);
 
@@ -20,7 +20,7 @@ try {
 
     if ((!empty($token) && isset($token)) && (!empty($userId) && isset($userId))) {
         if ($dulceAuth->validateTokenPassword($token, $userId)) {
-            $dulceAuth->insertNewPassword('new password here', $userId);
+            $dulceAuth->insertNewPassword('1234', $userId);
             echo 'Password changed successfully';
         }
     } else {

@@ -39,6 +39,7 @@ Some features include:
     3. [An Exceptional Case](#an-exceptional-case-or-not)
 6. [Constantes personalizadas](#custom_verification_email_url-y-custom_forgot_password_email_url)
 7. [Login](#login)
+    1. [Two-Factor Authentication (2FA) by Email](#two-factor-authentication-2fa-by-email)
 8. [Users](#users)
     1. [Does it Exist?](#does-the-user-exist)
     2. [Edit User](#editing-users)
@@ -214,6 +215,12 @@ define('DULCE_AUTH_SESSION_EXPIRATION', 60 * 60); // session lifetime.
 //For 2 days: define('DULCE_AUTH_SESSION_EXPIRATION', 60 * 60 * 24 * 2);
 //For 7 days: define('DULCE_AUTH_SESSION_EXPIRATION', 60 * 60 * 24 * 7);
 //For 1 hour: define('DULCE_AUTH_SESSION_EXPIRATION', 60 * 60);
+
+// Double factor authentication (2FA) by email
+define('DULCE_AUTH_EMAIL_2FA', true); // activate 2FA via email
+define('DULCE_AUTH_FROM_EMAIL', 'no-reply@yourwebsite.com');
+define('DULCE_AUTH_EMAIL_OTP_EXPIRY_MINUTES', 10); // expiration time
+define('DULCE_AUTH_EMAIL_OTP_SUBJECT', 'Tu código de verificación');
 ```
 ## Database Configuration File
 During installation, a file called **config-db.php** was created which is used to configure the database data.
@@ -253,6 +260,17 @@ And the **forgot_password_email.json** file contains:
 		"message": "You are receiving this email because you have forgotten your password, and a token has been generated to reset it. \nClick the following link: {{verification_link}} to reset your password. \n\n Note: If you did not request this, please contact administration immediately as your account may be at risk.",
 		"screen_message": "We have just sent you an email to reset your password. Please check your inbox."
 	}
+}
+```
+Since 2.1.0 version, a new file called **otp_email.json** has been created with the following content:
+```json
+{
+    "otp": {
+        "type": "otp",
+        "subject": "Login Verification Code",
+        "message": "Your verification code is: {{otp_code}}\n\nThis code will expire in {{expiration_minutes}} minutes.\n\nIf you did not attempt to sign in, please ignore this email.",
+        "screen_message": "We have just sent a verification code to your email address. Please check your inbox."
+    }
 }
 ```
 # Exception Handling
@@ -649,6 +667,29 @@ If we have a field for the country called "country," we can do:
 $dulceAuth->currentUser()->country;
 ```
 And similarly for each field we want to display for the currently logged-in user.
+
+## Two-Factor Authentication (2FA) by Email
+Since version 2.1.0, dulceAuth incorporates support for two-factor authentication (2FA) using OTP codes sent via email.
+To enable this functionality, simply define the constant *DULCE_AUTH_EMAIL_2FA* in the configuration file as *true*:
+```php
+define('DULCE_AUTH_EMAIL_2FA', true);
+```
+When this functionality is enabled, the user will need to:
+
+ 1. Log in with their email and password.
+ 2. Receive a 6-digit OTP code at their email address.
+ 3. Enter the received code to complete the authentication process.
+
+For verifying the OTP code, we have the following method available:
+```php
+$dulceAuth->verifyOtp($code)
+```
+This method will return **true** if the OTP code is correct and has not expired.
+
+If we need generate a new OTP code (for example, if the user does not receive the email or the code has expired), we can use the following method:
+```php
+$dulceAuth->resendOtp()
+```
 
 # Users
 There are several options for displaying a list of all users in the database.

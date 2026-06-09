@@ -4,7 +4,9 @@
 .editorconfig
 notas.txt
 examples.php
+example-otp.php
 convenciones.txt
+/config/
 /src/config/config.php
 /src/config/config-db.php
 /src/config/prueba.php
