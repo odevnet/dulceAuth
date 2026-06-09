@@ -135,13 +135,9 @@ class Auth
                 $this->session->set('otp_sent_count', 1);
 
                 try {
-                    $mail = new DulceMail();
-                    $from = defined('DULCE_AUTH_FROM_EMAIL') ? DULCE_AUTH_FROM_EMAIL : 'no-reply@localhost';
-                    $mail->from($from)
-                        ->to($user->email)
-                        ->subject('Código de verificación')
-                        ->message('Tu código de verificación es: ' . $code . "\n\nEste código expirará en 10 minutos.");
-                    $mail->send();
+                    $sendOtpEmail = new DulceMail();
+                    $sendOtpEmail->from(DULCE_AUTH_EMAIL_FROM);
+                    $sendOtpEmail->sendOtpEmail($user->email, $code, $userId, true);
                 } catch (\Throwable $e) {
                     // Limpieza si falla el envío
                     $this->session->remove('pending_2fa');
@@ -359,16 +355,13 @@ class Auth
 
         try {
             $user = $this->userModel::find($pendingUser);
+            $userId = $user->id;
             if (!$user) {
                 return false;
             }
-            $mail = new DulceMail();
-            $from = defined('DULCE_AUTH_FROM_EMAIL') ? DULCE_AUTH_FROM_EMAIL : 'no-reply@localhost';
-            $mail->from($from)
-                ->to($user->email)
-                ->subject('Verification code — resend')
-                ->message('Your new verification code is: ' . $code . "\n\nThis code will expire in 10 minutes.");
-            $mail->send();
+            $sendOtpEmail = new DulceMail();
+            $sendOtpEmail->from(DULCE_AUTH_EMAIL_FROM);
+            $sendOtpEmail->sendOtpEmail($user->email, $code, $userId, true);
         } catch (\Throwable $e) {
             return false;
         }
